@@ -3,24 +3,31 @@
 // Check the wiki for a full description of the configuration:
 // https://yalter.github.io/niri/Configuration:-Introduction
 
-environment {
-  DISPLAY null
-  ELECTRON_OZONE_PLATFORM_HINT "auto"
-  XDG_SESSION_TYPE "wayland"
-  XDG_CURRENT_DESKTOP "niri"
+// environment {
+//   DISPLAY null
+// }
 
-  QT_QPA_PLATFORM "wayland"
-  QT_QPA_PLATFORMTHEME "gtk3"
-  QT_QPA_PLATFORMTHEME_QT6 "gtk3"
-  QT_STYLE_OVERRIDE "Fusion"
-  QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
-  QT_AUTO_SCREEN_SCALE_FACTOR "1"
+// Add lines like this to spawn processes at startup.
+// Note that running niri as a session supports xdg-desktop-autostart,
+// which may be more convenient to use.
+// See the binds section below for more spawn examples.
 
-  GTK_THEME "Adwaita:dark"
-  GDK_BACKEND "wayland,x11"
+// Start startup tools
+spawn-at-startup "swayosd-server"
+spawn-at-startup "mako"
+spawn-at-startup "waybar"
+spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
+spawn-at-startup "swayidle" "-w" "timeout" "180" "swaylock -f" "timeout" "187" "systemctl suspend" "before-sleep" "swaylock -f"
 
-  MOZ_ENABLE_WAYLAN "1"
-  MOZ_DBUS_REMOTE "1"
+// To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
+// spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
+spawn-sh-at-startup "swaybg -i ~/.config/wallpapers/home-screen.jpg -m fill"
+
+switch-events {
+    lid-close { spawn "systemctl" "suspend"; }
+    // lid-open { spawn "notify-send" "The laptop lid is open!"; }
+    // tablet-mode-on { spawn "bash" "-c" "gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true"; }
+    // tablet-mode-off { spawn "bash" "-c" "gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled false"; }
 }
 
 // Input device configuration.
@@ -298,22 +305,6 @@ hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
     skip-at-startup
 }
-
-// Add lines like this to spawn processes at startup.
-// Note that running niri as a session supports xdg-desktop-autostart,
-// which may be more convenient to use.
-// See the binds section below for more spawn examples.
-
-// Start startup tools
-spawn-at-startup "swayosd-server"
-spawn-at-startup "mako"
-spawn-at-startup "waybar"
-spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
-spawn-at-startup "swaybg" "-i" "~/.config/wallpapers/home-screen.jpg" "-m" "fill"
-spawn-at-startup "swayidle" "-w" "timeout" "180" "swaylock -f" "timeout" "187" "systemctl suspend" "before-sleep" "swaylock -f"
-
-// To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
-// spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.

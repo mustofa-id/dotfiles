@@ -1,0 +1,124 @@
+// -*- mode: jsonc -*-
+{
+	"layer": "top",
+	"position": "left",
+	"output": ["eDP-1"],
+	"width": 22,
+	"spacing": 8,
+	"modules-left": ["custom/logo", "clock"],
+	"modules-center": ["niri/workspaces"],
+	"modules-right": [
+		"tray",
+		"bluetooth",
+		"network",
+		"wireplumber#sink",
+		"wireplumber#source",
+		"power-profiles-daemon",
+		"battery",
+		"idle_inhibitor",
+	],
+
+	"custom/logo": {
+		"format": "",
+		"tooltip": false,
+	},
+
+	"clock": {
+		"format": "{:%I\n%M\n%p\n<span color='gray'>——</span>\n%d\n%m\n%y}",
+		"tooltip-format": "<tt>{calendar}</tt>",
+		// "rotate": 270,
+		"calendar": {
+			"mode": "year",
+			"mode-mon-col": 3,
+			"format": {
+				"months": "<span color='#ffead3'><b>{}</b></span>",
+				"weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+				"today": "<span color='#ff6699'><b><u>{}</u></b></span>",
+			},
+		},
+	},
+
+	"niri/workspaces": {
+		"all-outputs": false,
+		"format": "{icon}",
+		"format-icons": {
+			"active": "<span size='14pt'></span>",
+			"default": "",
+		}
+	},
+
+	"tray": {
+		"icon-size": 14,
+		"spacing": 8,
+	},
+
+	"bluetooth": {
+		"format": "󰂯",
+		"tooltip-format": "{controller_alias} {controller_address}\n{num_connections} connected",
+		"tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+	},
+
+	"network": {
+		"format-wifi": "{icon}",
+		"format-ethernet": "󰲝",
+		"format-linked": "󰌙",
+		"format-disconnected": "󰤫",
+		"format-disabled": "󰤮",
+		"format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+		"tooltip-format-wifi": "{essid} ({signalStrength}%) {frequency}GHz {ifname}\nGateway: {gwaddr}\nIP: {ipaddr}\nNetMask: {netmask}\nNetMask6: {netmask6}",
+		"tooltip-format-ethernet": "{ifname}\nGateway: {gwaddr}\nIP: {ipaddr}\nNetMask: {netmask}\nNetMask6: {netmask6}",
+		"tooltip-format-disconnected": "Disconnected",
+		"tooltip-format-disabled": "Disabled",
+	},
+
+	"wireplumber#sink": {
+		"node-type": "Audio/Sink",
+		"format": "{icon}",
+		"format-muted": "󰸈",
+		"format-icons": ["󰕿", "󰖀", "󰕾"],
+		"tooltip-format": "{node_name} | {volume}%",
+		"on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+		"scroll-step": 1,
+		"max-length": 2,
+	},
+
+	"wireplumber#source": {
+		"node-type": "Audio/Source",
+		"format": "{icon}",
+		"format-muted": "󰍭",
+		"format-icons": ["󰍮", "󰍯", "󰍬"],
+		"tooltip-format": "{node_name} | {volume}%",
+		"on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+		"scroll-step": 1,
+		"max-length": 2,
+	},
+
+	"power-profiles-daemon": {
+		"format": "{icon}",
+		"tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+		"tooltip": true,
+		"format-icons": {
+			"default": "",
+			"performance": "󱓞",
+			"balanced": "󰜡",
+			"power-saver": "󰌪",
+		},
+	},
+
+	"battery": {
+		"format": "{capacity}",
+		"tooltip-format": "{timeTo}\nPower: {power} Watt\nHealth: {health}%",
+		"states": {
+			"warning": 30,
+			"critical": 15,
+		},
+	},
+
+	"idle_inhibitor": {
+		"format": "{icon}",
+		"format-icons": {
+			"activated": "󱙲",
+			"deactivated": "󰍁",
+		},
+	},
+}

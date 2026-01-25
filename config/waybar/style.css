@@ -1,0 +1,107 @@
+* {
+	font-family: "JetBrains Mono", "Symbols Nerd Font", sans-serif;
+	font-size: 10pt;
+	border: none;
+	border-radius: 0;
+	padding: 0;
+	margin: 0;
+	min-width: 10px;
+}
+
+window#waybar {
+	background-color: #222;
+	color: #fff;
+	transition-property: background-color;
+	transition-duration: 0.5s;
+}
+
+window#waybar.hidden {
+	opacity: 0.2;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+	padding: 0.5rem 0.3rem;
+	margin: 0;
+}
+
+#custom-logo {
+	color: #84c188;
+	font-size: 12pt;
+}
+
+#workspaces button.active {
+	color: #84c188;
+}
+
+#bluetooth {
+	font-size: 13pt;
+}
+
+#bluetooth.disabled,
+#bluetooth.off {
+	color: gray;
+}
+
+#bluetooth.connected {
+	color: skyblue;
+}
+
+#network {
+	font-size: 12pt;
+}
+
+#network.disconnected {
+	color: yellowgreen;
+}
+
+#network.disabled {
+	color: gray;
+}
+
+#wireplumber.source,
+#wireplumber.sink {
+	font-size: 14pt;
+}
+
+#wireplumber.source.muted,
+#wireplumber.sink.muted {
+	color: red;
+}
+
+#power-profiles-daemon {
+	font-size: 12pt;
+}
+
+#power-profiles-daemon.performance {
+	color: red;
+}
+
+#power-profiles-daemon.power-saver {
+	color: yellowgreen;
+}
+
+#battery.warning {
+	color: yellow;
+}
+
+#battery.critical {
+	color: red;
+}
+
+#battery.charging {
+	color: greenyellow;
+}
+
+#battery.plugged {
+	color: aquamarine;
+}
+
+#idle_inhibitor {
+	font-size: 12pt;
+}
+
+#idle_inhibitor.activated {
+	color: red;
+}

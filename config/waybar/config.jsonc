@@ -9,6 +9,7 @@
 	"modules-center": ["niri/workspaces"],
 	"modules-right": [
 		"tray",
+		"custom/screencast-status",
 		"bluetooth",
 		"network",
 		"wireplumber#sink",
@@ -44,12 +45,25 @@
 		"format-icons": {
 			"active": "<span size='14pt'></span>",
 			"default": "",
-		}
+		},
 	},
 
 	"tray": {
 		"icon-size": 14,
 		"spacing": 8,
+	},
+
+	"custom/screencast-status": {
+		"exec": "~/.config/waybar/scripts/wf-rec-status.sh",
+		"interval": 2,
+		"return-type": "json",
+		"format": "{icon}",
+		"format-icons": {
+			"recording": "",
+			// "idle": "",
+		},
+		"tooltip-format": "Recording screen. Click to stop.",
+		"on-click": "~/.config/niri/wf-rec-toggle.sh",
 	},
 
 	"bluetooth": {

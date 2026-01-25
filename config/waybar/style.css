@@ -35,6 +35,11 @@ window#waybar.hidden {
 	color: #84c188;
 }
 
+#custom-screencast-status {
+	color: red;
+	font-size: 12pt;
+}
+
 #bluetooth {
 	font-size: 13pt;
 }

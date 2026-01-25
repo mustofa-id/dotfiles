@@ -640,6 +640,9 @@ binds {
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Mod+Print { screenshot-window; }
+    Mod+Shift+Ctrl+Print hotkey-overlay-title="Toggle Screen Recording" {
+        spawn "~/.config/niri/wf-rec-toggle.sh"
+    }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here

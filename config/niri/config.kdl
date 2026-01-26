@@ -135,7 +135,7 @@ output "eDP-1" {
 }
 
 output "HDMI-A-1" {
-    mode "1920x1080@120.000"
+    mode "1920x1080@60.000"
     scale 1
     transform "normal"
     position x=0 y=-1080
@@ -198,7 +198,7 @@ layout {
         // off
 
         // How many logical pixels the ring extends out from the windows.
-        width 1
+        width 1.5
 
         // Colors can be set in a variety of ways:
         // - CSS named colors: "red"

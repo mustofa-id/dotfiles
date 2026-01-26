@@ -1,0 +1,54 @@
+@define-color accent #84c188;
+
+window#osd {
+	border: 1px solid @accent;
+	background: #222222;
+	border-radius: 0;
+}
+
+window#osd #container {
+	margin: 8px;
+}
+
+window#osd image {
+	-gtk-icon-transform: scale(0.6);
+}
+
+window#osd image,
+window#osd label {
+	color: whitesmoke;
+	font-size: 12pt;
+}
+
+window#osd progressbar:disabled,
+window#osd image:disabled {
+	opacity: 0.5;
+}
+
+window#osd progressbar,
+window#osd segmentedprogress {
+	min-height: 4px;
+	border: none;
+}
+
+window#osd trough,
+window#osd segment {
+	min-height: inherit;
+	background: alpha(whitesmoke, 0.5);
+	border: none;
+}
+
+window#osd progress,
+window#osd segment.active {
+	min-height: inherit;
+	background: @accent;
+	border: none;
+}
+
+window#osd segment {
+	margin-left: 8px;
+}
+
+window#osd segment:first-child {
+	margin-left: 0;
+}

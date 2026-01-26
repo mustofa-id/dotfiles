@@ -1,6 +1,7 @@
 {
 	"files.associations": {
-		"*.kdl": "groovy"
+		"*.kdl": "groovy",
+		"*.toml": "ini"
 	},
 	"css.validate": false
 }

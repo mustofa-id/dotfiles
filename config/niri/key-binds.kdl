@@ -31,12 +31,12 @@ binds {
     // XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
     // XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
     // XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
-    XF86AudioRaiseVolume       allow-when-locked=true { spawn-sh "swayosd-client --output-volume raise"; }
-    XF86AudioLowerVolume       allow-when-locked=true { spawn-sh "swayosd-client --output-volume lower"; }
-    Shift+XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "swayosd-client --input-volume raise"; }
-    Shift+XF86AudioLowerVolume allow-when-locked=true { spawn-sh "swayosd-client --input-volume lower"; }
-    XF86AudioMute              allow-when-locked=true { spawn-sh "swayosd-client --output-volume mute-toggle"; }
-    XF86AudioMicMute           allow-when-locked=true { spawn-sh "swayosd-client --input-volume mute-toggle"; }
+    XF86AudioRaiseVolume       allow-when-locked=true { spawn-sh "swayosd-client --monitor eDP-1 --output-volume raise"; }
+    XF86AudioLowerVolume       allow-when-locked=true { spawn-sh "swayosd-client --monitor eDP-1 --output-volume lower"; }
+    Shift+XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "swayosd-client --monitor eDP-1 --input-volume raise"; }
+    Shift+XF86AudioLowerVolume allow-when-locked=true { spawn-sh "swayosd-client --monitor eDP-1 --input-volume lower"; }
+    XF86AudioMute              allow-when-locked=true { spawn-sh "swayosd-client --monitor eDP-1 --output-volume mute-toggle"; }
+    XF86AudioMicMute           allow-when-locked=true { spawn-sh "swayosd-client --monitor eDP-1 --input-volume mute-toggle"; }
 
     // Example media keys mapping using playerctl.
     // This will work with any MPRIS-enabled media player.
@@ -50,8 +50,8 @@ binds {
     // but you need to manually put each argument in separate "" quotes.
     // XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
     // XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
-    XF86MonBrightnessUp   allow-when-locked=true { spawn-sh "swayosd-client --brightness raise --device intel_backlight"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "swayosd-client --brightness lower --device intel_backlight"; }
+    XF86MonBrightnessUp   allow-when-locked=true { spawn-sh "swayosd-client --monitor eDP-1 --brightness raise --device intel_backlight"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "swayosd-client --monitor eDP-1 --brightness lower --device intel_backlight"; }
     XF86KbdBrightnessUp   allow-when-locked=true { spawn-sh "notify-send 'Keyboard backlight ' -t 2000"; }
     XF86KbdBrightnessDown allow-when-locked=true { spawn-sh "notify-send 'Keyboard backlight ' -t 2000"; }
 

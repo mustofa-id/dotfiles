@@ -1,3 +1,5 @@
+@define-color accent #84c188;
+
 * {
 	font-family: "JetBrains Mono", "Symbols Nerd Font", sans-serif;
 	font-size: 10pt;
@@ -13,6 +15,8 @@ window#waybar {
 	color: #fff;
 	transition-property: background-color;
 	transition-duration: 0.5s;
+	border: none;
+	border-right: 1px solid alpha(@accent, 0.5);
 }
 
 window#waybar.hidden {
@@ -27,12 +31,12 @@ window#waybar.hidden {
 }
 
 #custom-logo {
-	color: #84c188;
+	color: @accent;
 	font-size: 12pt;
 }
 
 #workspaces button.active {
-	color: #84c188;
+	color: @accent;
 }
 
 #custom-screencast-status {

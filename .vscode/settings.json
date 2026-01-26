@@ -1,0 +1,6 @@
+{
+	"files.associations": {
+		"*.kdl": "groovy"
+	},
+	"css.validate": false
+}

@@ -54,7 +54,7 @@ window#waybar.hidden {
 }
 
 #bluetooth.connected {
-	color: skyblue;
+	color: @accent;
 }
 
 #network {
@@ -89,11 +89,11 @@ window#waybar.hidden {
 }
 
 #power-profiles-daemon.power-saver {
-	color: yellowgreen;
+	color: @accent;
 }
 
 #battery.warning {
-	color: yellow;
+	color: coral;
 }
 
 #battery.critical {
@@ -101,7 +101,7 @@ window#waybar.hidden {
 }
 
 #battery.charging {
-	color: greenyellow;
+	color: @accent;
 }
 
 #battery.plugged {

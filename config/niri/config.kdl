@@ -35,8 +35,8 @@ switch-events {
 // Find the full list of options on the wiki:
 // https://yalter.github.io/niri/Configuration:-Input
 input {
-    keyboard {
-        xkb {
+    // keyboard {
+        // xkb {
             // You can set rules, model, layout, variant and options.
             // For more information, see xkeyboard-config(7).
 
@@ -47,11 +47,11 @@ input {
             // If this section is empty, niri will fetch xkb settings
             // from org.freedesktop.locale1. You can control these using
             // localectl set-x11-keymap.
-        }
+        // }
 
         // Enable numlock on startup, omitting this setting disables it.
-        numlock
-    }
+        // numlock
+    // }
 
     // Next sections include libinput settings.
     // Omitting settings disables them, or leaves them at their default values.
@@ -96,6 +96,11 @@ input {
     // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
     // focus-follows-mouse max-scroll-amount="0%"
 }
+
+// `optional` is not yet supported
+// include optional=true "xkb-meta-alt.kdl"
+
+include "keyboard.kdl"
 
 // You can configure outputs by their name, which you can find
 // by running `niri msg outputs` while inside a niri instance.

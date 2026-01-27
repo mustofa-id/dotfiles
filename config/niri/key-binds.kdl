@@ -304,5 +304,5 @@ binds {
     // Default browser
     Mod+B hotkey-overlay-title="Open a Browser: google-chrome" { spawn "google-chrome-stable"; }
 
-    XF86Launch1 hotkey-overlay-title="Toggle Kanata service ON/OFF" { spawn "~/.config/niri/scripts/kanata-toggle"; }
+    XF86Launch1 hotkey-overlay-title="Swap xkb (Meta->Alt Mapping ON/OFF)" { spawn "~/.config/niri/scripts/swap-xkb"; }
 }

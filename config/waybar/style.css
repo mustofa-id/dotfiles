@@ -12,7 +12,7 @@
 
 window#waybar {
 	background-color: #222;
-	color: #fff;
+	color: white;
 	transition-property: background-color;
 	transition-duration: 0.5s;
 	border: none;
@@ -62,7 +62,7 @@ window#waybar.hidden {
 }
 
 #network.disconnected {
-	color: yellowgreen;
+	color: coral;
 }
 
 #network.disabled {
@@ -72,11 +72,12 @@ window#waybar.hidden {
 #wireplumber.source,
 #wireplumber.sink {
 	font-size: 14pt;
+	color: @accent;
 }
 
 #wireplumber.source.muted,
 #wireplumber.sink.muted {
-	color: red;
+	color: white;
 }
 
 #power-profiles-daemon {

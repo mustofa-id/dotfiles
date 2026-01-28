@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+MODE="${1:-sink}"
+
+ID_FILE="/tmp/osd-$MODE.id"
+TIMEOUT=1200
+
+# drain stdin only if piped
+[[ -p /dev/stdin ]] && cat >/dev/null
+
+notify_replace() {
+  local title="$1"
+  local body="$2"
+  local icon="$3"
+
+  [[ -f "$ID_FILE" ]] && ID=$(cat "$ID_FILE") || ID=0
+
+  NEW_ID=$(notify-send \
+	-a "OSD" \
+    -r "$ID" \
+    -t "$TIMEOUT" \
+    -i "$icon" \
+    "$title" "$body" \
+    --print-id)
+
+  echo "$NEW_ID" > "$ID_FILE"
+}
+
+case "$MODE" in
+  sink)
+    NODE="@DEFAULT_AUDIO_SINK@"
+    TITLE="Volume"
+
+    INFO=$(wpctl get-volume "$NODE")
+    VOL=$(echo "$INFO" | awk '{printf "%d", $2 * 100}')
+
+    if echo "$INFO" | grep -q MUTED; then
+      notify_replace "󰸈 $TITLE ${VOL}% (Muted)"
+    else
+      notify_replace "󰕾 $TITLE ${VOL}%"
+    fi
+    ;;
+  source)
+    NODE="@DEFAULT_AUDIO_SOURCE@"
+    TITLE="Microphone"
+
+    INFO=$(wpctl get-volume "$NODE")
+    VOL=$(echo "$INFO" | awk '{printf "%d", $2 * 100}')
+
+    if echo "$INFO" | grep -q MUTED; then
+      notify_replace "󰍭 $TITLE ${VOL}% (Muted)"
+    else
+      notify_replace "󰍬 $TITLE ${VOL}%"
+    fi
+    ;;
+  brightness)
+    CUR=$(brightnessctl get)
+    MAX=$(brightnessctl max)
+    PCT=$(( CUR * 100 / MAX ))
+
+    notify_replace "☀ Brightness ${PCT}%"
+    ;;
+  *)
+    exit 0
+    ;;
+esac

@@ -13,7 +13,6 @@
 // See the binds section below for more spawn examples.
 
 // Start startup tools
-spawn-at-startup "swayosd-server"
 spawn-at-startup "mako"
 spawn-at-startup "waybar"
 spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"

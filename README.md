@@ -1,6 +1,6 @@
 # Dotfiles
 
-Dry-run by default; `--apply` flag creates symlinks from `config/` → `~/.config` and `home/` → `~`.
+Dry-run by default; `--apply` flag creates symlinks from `config/` → `~/.config` and `home/` → `~`. To exclude files from installation, list them in the `.exclude` file (see `.exclude.example`).
 
 ## Packages
 

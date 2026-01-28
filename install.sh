@@ -7,6 +7,24 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 DRY_RUN=true
+EXCLUDE_FILE="$ROOT/.exclude"
+declare -A EXCLUDES=()
+
+# -------------------------------
+# Load exclude list
+# -------------------------------
+if [[ -f "$EXCLUDE_FILE" ]]; then
+  while IFS= read -r line; do
+    # Trim whitespace
+    line="${line#"${line%%[![:space:]]*}"}"
+    line="${line%"${line##*[![:space:]]}"}"
+
+    # Skip comments and empty lines
+    [[ -z "$line" || "$line" == \#* ]] && continue
+
+    EXCLUDES["$line"]=1
+  done < "$EXCLUDE_FILE"
+fi
 
 # Parse flags
 if [[ "${1:-}" == "--apply" ]]; then
@@ -29,17 +47,31 @@ link_top_level() {
   local src="$1"
   local dst="$2"
 
-  [ -d "$src" ] || return 0  # Skip if source doesn't exist
+  [ -d "$src" ] || return 0
   mkdir -p "$dst"
 
-  # Include hidden files, but skip "." and ".."
   shopt -s dotglob nullglob
 
   for item in "$src"/* "$src"/.[!.]*; do
-    [ -e "$item" ] || continue  # skip if no matches
+    [ -e "$item" ] || continue
+
     name="$(basename "$item")"
     target="$dst/$name"
 
+    # -------------------------------
+    # Handle excludes
+    # -------------------------------
+    if [[ -n "${EXCLUDES[$name]:-}" ]]; then
+      if [[ -L "$target" ]]; then
+        echo "🧹 Removing excluded symlink $target"
+        run rm "$target"
+      else
+        echo "⏭️  Skipping excluded $name"
+      fi
+      continue
+    fi
+
+    # we do replace symlink in case if it broken link
     if [ -e "$target" ] && [ ! -L "$target" ]; then
       echo "⚠️  Skipping $target (exists and not a symlink)"
       continue
@@ -64,7 +96,6 @@ else
 fi
 echo "=============================="
 
-# Map source directories to their destinations
 declare -A MAP=(
   ["$ROOT/config"]="$HOME/.config"
   ["$ROOT/home"]="$HOME"

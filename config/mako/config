@@ -16,3 +16,7 @@ height=850
 max-visible=5
 anchor=top-right
 default-timeout=7000
+
+[app-name=OSD]
+anchor=bottom-center
+outer-margin=0,0,100

@@ -2,8 +2,8 @@
 
 CONFIG_DIR="$HOME/.config/niri"
 LINK="$CONFIG_DIR/keyboard.kdl"
-DEFAULT="$CONFIG_DIR/scripts/keyboard-default.kdl"
-MOD="$CONFIG_DIR/scripts/keyboard-remap.kdl"
+DEFAULT="$CONFIG_DIR/templates/keyboard-default.kdl"
+MOD="$CONFIG_DIR/templates/keyboard-remap.kdl"
 
 source ~/.config/niri/scripts/utils
 

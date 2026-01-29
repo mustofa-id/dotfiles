@@ -1,5 +1,5 @@
 font=Noto Sans 10
-format=<span size='12pt' weight='bold'>%s</span>%b<span color='gray'>\n%a</span>
+format=<span size='12pt' weight='bold'>%s</span>\n%b<span color='gray'>\n— %a</span>
 markup=1
 icons=1
 

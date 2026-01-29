@@ -4,7 +4,7 @@ Dry-run by default; `--apply` flag creates symlinks from `config/` → `~/.confi
 
 ## Packages
 
-`niri` `waybar` `fuzzel` `swaybg` `swayosd` `swaylock` `mako` `xdg-desktop-portal` `xdg-desktop-portal-gnome` `xdg-desktop-portal-gtk` `alacritty` `cliphist` `rofimoji` `wl-clipboard`
+`niri` `waybar` `fuzzel` `swaybg` `swayosd` `swaylock` `mako` `xdg-desktop-portal` `xdg-desktop-portal-gnome` `xdg-desktop-portal-gtk` `alacritty` `foot` `cliphist` `rofimoji` `wl-clipboard`
 
 ## Setting Gnome UI
 

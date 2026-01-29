@@ -3,28 +3,12 @@
 MODE="${1:-sink}"
 
 ID_FILE="/tmp/osd-$MODE.id"
-TIMEOUT=1200
+TIMEOUT=3000
 
 # drain stdin only if piped
 [[ -p /dev/stdin ]] && cat >/dev/null
 
-notify_replace() {
-  local title="$1"
-  local body="$2"
-  local icon="$3"
-
-  [[ -f "$ID_FILE" ]] && ID=$(cat "$ID_FILE") || ID=0
-
-  NEW_ID=$(notify-send \
-	-a "OSD" \
-    -r "$ID" \
-    -t "$TIMEOUT" \
-    -i "$icon" \
-    "$title" "$body" \
-    --print-id)
-
-  echo "$NEW_ID" > "$ID_FILE"
-}
+source ~/.config/niri/scripts/utils
 
 case "$MODE" in
   sink)
@@ -33,11 +17,12 @@ case "$MODE" in
 
     INFO=$(wpctl get-volume "$NODE")
     VOL=$(echo "$INFO" | awk '{printf "%d", $2 * 100}')
+    VOL_BAR=$(progress_bar "$VOL" 100 39)
 
     if echo "$INFO" | grep -q MUTED; then
-      notify_replace "󰸈 $TITLE ${VOL}% (Muted)"
+      notify_replace "󰸈 $TITLE ${VOL}% (Muted)" "$VOL_BAR"
     else
-      notify_replace "󰕾 $TITLE ${VOL}%"
+      notify_replace "󰕾 $TITLE ${VOL}%" "$VOL_BAR"
     fi
     ;;
   source)
@@ -46,11 +31,12 @@ case "$MODE" in
 
     INFO=$(wpctl get-volume "$NODE")
     VOL=$(echo "$INFO" | awk '{printf "%d", $2 * 100}')
+    VOL_BAR=$(progress_bar "$VOL" 100 39)
 
     if echo "$INFO" | grep -q MUTED; then
-      notify_replace "󰍭 $TITLE ${VOL}% (Muted)"
+      notify_replace "󰍭 $TITLE ${VOL}% (Muted)" "$VOL_BAR"
     else
-      notify_replace "󰍬 $TITLE ${VOL}%"
+      notify_replace "󰍬 $TITLE ${VOL}%" "$VOL_BAR"
     fi
     ;;
   brightness)

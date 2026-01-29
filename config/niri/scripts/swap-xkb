@@ -5,23 +5,17 @@ LINK="$CONFIG_DIR/keyboard.kdl"
 DEFAULT="$CONFIG_DIR/scripts/keyboard-default.kdl"
 MOD="$CONFIG_DIR/scripts/keyboard-remap.kdl"
 
-notify() {
-    if command -v swayosd-client >/dev/null 2>&1; then
-        swayosd-client --custom-message "$1"
-	else
-		notify-send "Kanata" "$1" -t 1500
-    fi
-}
+source ~/.config/niri/scripts/utils
 
 # Check if the link exists and where it points
 if [ -L "$LINK" ]; then
     CURRENT_TARGET=$(readlink "$LINK")
     if [ "$CURRENT_TARGET" = "$DEFAULT" ]; then
         ln -sf "$MOD" "$LINK"
-        notify "󰥻 Using Remap Keyboard"
+        notify_replace "󰥻 ON" "Using Remap Keyboard"
     else
         ln -sf "$DEFAULT" "$LINK"
-        notify "󰹋 Using Default Keyboard"
+        notify_replace "󰹋 OFF" "Using Default Keyboard"
     fi
 else
     # If default doesn't exist, create it pointing to default

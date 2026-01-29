@@ -1,6 +1,8 @@
 # Dotfiles
 
-Dry-run by default; `--apply` flag creates symlinks from `config/` → `~/.config` and `home/` → `~`. To exclude files from installation, list them in the `.exclude` file (see `.exclude.example`).
+<img width="100%" alt="Desktop looks" src="https://github.com/user-attachments/assets/159885d8-ad48-4af6-996c-b3b75d18ddd3" />
+
+Dry-run by default; `--apply` flag to install. To exclude files from installation, list them in the `.exclude` file (see `.exclude.example`).
 
 ## Packages
 
@@ -51,6 +53,8 @@ For Firefox, the `Exec` line should be: `firefox -private-window %u`.
 > _TODO_
 
 ### Auto Unlock Keyring
+
+> _TODO_
 
 ---
 

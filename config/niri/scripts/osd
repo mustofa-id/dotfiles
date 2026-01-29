@@ -43,8 +43,9 @@ case "$MODE" in
     CUR=$(brightnessctl get)
     MAX=$(brightnessctl max)
     PCT=$(( CUR * 100 / MAX ))
+    PCT_BAR=$(progress_bar "$PCT" 100 39)
 
-    notify_replace "☀ Brightness ${PCT}%"
+    notify_replace "☀ Brightness ${PCT}%" "$PCT_BAR"
     ;;
   *)
     exit 0

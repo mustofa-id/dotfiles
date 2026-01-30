@@ -19,21 +19,25 @@ window-rule {
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
 
-	// Chrome, the app-id become "" when checked using `niri msg windows`
-	match title="Picture in picture"
+    // Chrome, the app-id become "" when checked using `niri msg windows`
+    match title="Picture in picture"
+
+    // Zoom toolbar
+    match app-id=r#"zoom$"# title="^as_toolbar$"
     open-floating true
 }
 
 // Example: block out two password managers from screen capture.
 // (This example rule is commented out with a "/-" in front.)
-/-window-rule {
-    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+window-rule {
+    // match app-id=r#"^org\.keepassxc\.KeePassXC$"#
     match app-id=r#"^org\.gnome\.World\.Secrets$"#
+    match app-id=r#"zoom$"# title="^as_toolbar$"
 
-    block-out-from "screen-capture"
+    // block-out-from "screen-capture"
 
     // Use this instead if you want them visible on third-party screenshot tools.
-    // block-out-from "screencast"
+    block-out-from "screencast"
 }
 
 // Example: enable rounded corners for all windows.

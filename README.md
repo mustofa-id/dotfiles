@@ -6,7 +6,7 @@ Dry-run by default; `--apply` flag to install. To exclude files from installatio
 
 ## Packages
 
-`niri` `waybar` `fuzzel` `swaybg` `swayosd` `swaylock` `mako` `xdg-desktop-portal` `xdg-desktop-portal-gnome` `xdg-desktop-portal-gtk` `alacritty` `foot` `cliphist` `rofimoji` `wl-clipboard networkmanager bluez-utils bluez wf-recorder`
+`niri` `waybar` `fuzzel` `swaybg` `swayosd` `swaylock` `swayidle` `mako` `xdg-desktop-portal` `xdg-desktop-portal-gnome` `xdg-desktop-portal-gtk` `alacritty` `foot` `cliphist` `rofimoji` `wl-clipboard networkmanager bluez-utils bluez wf-recorder` `otf-cascadia-code` `ttf-lato`
 
 ## Setting Gnome UI
 

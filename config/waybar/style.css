@@ -1,7 +1,7 @@
 @define-color accent #84c188;
 
 * {
-	font-family: "JetBrains Mono", "Symbols Nerd Font", sans-serif;
+	font-family: "Cascadia Code", "Symbols Nerd Font", sans-serif;
 	font-size: 10pt;
 	border: none;
 	border-radius: 0;

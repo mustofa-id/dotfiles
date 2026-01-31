@@ -7,8 +7,8 @@ progress_bar() {
     local current=$1
     local max=$2
     local width=${3:-10}
-    local filled_char=${4:-▪}
-    local empty_char=${5:-▫}
+    local filled_char=${4:-▰}
+    local empty_char=${5:-▱}
 
     ((current<0)) && current=0
     ((current>max)) && current=$max

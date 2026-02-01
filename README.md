@@ -42,7 +42,32 @@ For Firefox, the `Exec` line should be: `firefox -private-window %u`.
 
 ### Fingerprint Setup
 
-> _TODO_
+- `/etc/pam.d/swaylock`
+
+```conf
+#
+# PAM configuration file for the swaylock screen locker. By default, it includes
+# the 'login' configuration file (see /etc/pam.d/login)
+#
+# auth include login
+
+#%PAM-1.0
+
+# Try password first and hands control back to PAM cleanly
+auth      sufficient   pam_unix.so try_first_pass likeauth nullok
+
+# Fingerprint as optional fallback, max 3 tries
+auth      sufficient   pam_fprintd.so max-tries=3
+
+# Fall back to normal login (password)
+auth      include      system-local-login
+
+account   include      system-local-login
+password  include      system-local-login
+session   include      system-local-login
+```
+
+> _TODO: describe more_
 
 ### Battery Charing Limit
 

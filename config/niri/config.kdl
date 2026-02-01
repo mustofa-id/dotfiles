@@ -15,13 +15,13 @@
 // Start startup tools
 spawn-at-startup "mako"
 spawn-at-startup "waybar"
-spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
-spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
-spawn-at-startup "swayidle" "-w" "timeout" "180" "swaylock -f" "timeout" "187" "systemctl suspend" "before-sleep" "swaylock -f"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
+spawn-sh-at-startup "wl-paste --type text --watch cliphist store"
+spawn-sh-at-startup "wl-paste --type image --watch cliphist store"
 spawn-sh-at-startup "swaybg -i ~/.config/wallpapers/home-screen.jpg -m fill"
+spawn-sh-at-startup "swayidle -w timeout 180 systemctl suspend before-sleep swaylock -f"
 
 switch-events {
     lid-close { spawn "systemctl" "suspend"; }

@@ -259,7 +259,7 @@ binds {
     Ctrl+Print { screenshot-screen; }
     Mod+Print { screenshot-window; }
     Mod+Shift+Ctrl+Print hotkey-overlay-title="Toggle Screen Recording" {
-        spawn "~/.config/niri/wf-rec-toggle.sh"
+        spawn "~/.config/niri/scripts/toggle-wfr"
     }
 
     // Applications such as remote-desktop clients and software KVM switches may

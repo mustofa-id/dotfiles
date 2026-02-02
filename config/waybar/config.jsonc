@@ -54,7 +54,7 @@
 	},
 
 	"custom/screencast-status": {
-		"exec": "~/.config/waybar/scripts/wf-rec-status.sh",
+		"exec": "~/.config/waybar/scripts/status-wfr",
 		"interval": 2,
 		"return-type": "json",
 		"format": "{icon}",
@@ -63,7 +63,7 @@
 			// "idle": "",
 		},
 		"tooltip-format": "Recording screen. Click to stop.",
-		"on-click": "~/.config/niri/wf-rec-toggle.sh",
+		"on-click": "~/.config/niri/scripts/toggle-wfr",
 	},
 
 	"bluetooth": {

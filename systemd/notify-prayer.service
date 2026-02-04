@@ -1,0 +1,6 @@
+[Unit]
+Description=Prayer Time Notification
+
+[Service]
+Type=oneshot
+ExecStart=%h/.config/niri/scripts/notify-prayer

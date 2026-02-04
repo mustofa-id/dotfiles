@@ -1,0 +1,153 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# --------------------------------------------------
+# GUI-only guard (Wayland)
+# --------------------------------------------------
+SESSION_TYPE="$(loginctl show-session "$XDG_SESSION_ID" -p Type --value 2>/dev/null || true)"
+[[ "$SESSION_TYPE" != "wayland" ]] && exit 0
+
+# --------------------------------------------------
+# Paths
+# --------------------------------------------------
+CONFIG="$HOME/.config/prayer/config"
+CACHE_DIR="$HOME/.cache/prayer"
+TODAY="$(date +%F)"
+CACHE_FILE="$CACHE_DIR/$TODAY.json"
+STATE_FILE="$CACHE_DIR/state-$TODAY"
+
+mkdir -p "$CACHE_DIR"
+touch "$STATE_FILE"
+
+[[ -f "$CONFIG" ]] || exit 0
+source "$CONFIG"
+
+# Fallback location
+if [[ -z "${latitude:-}" || -z "${longitude:-}" ]]; then
+  [[ -f "$HOME/.prayer-location" ]] && source "$HOME/.prayer-location"
+fi
+
+# Validate lat-lng
+if [[ -z "${latitude:-}" || -z "${longitude:-}" ]]; then
+  echo "prayer-notify: latitude/longitude not configured" >&2
+  exit 0
+fi
+
+# --------------------------------------------------
+# Helpers
+# --------------------------------------------------
+has_internet() {
+  ping -c1 -W1 1.1.1.1 &>/dev/null
+}
+
+notify() {
+  notify-send \
+    -a "${notifyAppName:-Prayer}" \
+    -c "religion.prayer" \
+	-t 0 \
+	-u critical \
+    "$1" "$2"
+}
+
+already_notified() {
+  grep -qx "$1" "$STATE_FILE"
+}
+
+mark_notified() {
+  echo "$1" >> "$STATE_FILE"
+}
+
+# encode URI component
+url_encode() {
+  local s="$1" out="" i c
+  for ((i=0; i<${#s}; i++)); do
+    c="${s:i:1}"
+    case "$c" in
+      [a-zA-Z0-9.~_-]) out+="$c" ;;
+      *) printf -v out '%s%%%02X' "$out" "'$c" ;;
+    esac
+  done
+  echo "$out"
+}
+
+# --------------------------------------------------
+# API parameter whitelist (EXACT names)
+# --------------------------------------------------
+API_PARAMS=(
+  latitude
+  longitude
+  timezonestring
+  method
+  school
+  midnightMode
+  latitudeAdjustmentMethod
+  adjustment
+  tune
+)
+
+build_api_query() {
+  local query="" val
+  for key in "${API_PARAMS[@]}"; do
+    val="${!key:-}"
+    [[ -z "$val" ]] && continue
+    query+="&$key=$(url_encode "$val")"
+  done
+  echo "${query#&}"
+}
+
+# --------------------------------------------------
+# Fetch & cache (daily, online only)
+# --------------------------------------------------
+if [[ ! -f "$CACHE_FILE" ]]; then
+  has_internet || exit 0
+  QUERY="$(build_api_query)"
+  curl -fsSL "https://api.aladhan.com/v1/timings?$QUERY" > "$CACHE_FILE"
+fi
+
+# --------------------------------------------------
+# Hijri date (from API)
+# --------------------------------------------------
+# HIJRI_DATE="$(
+#   grep -o '"hijri":[^{]*{[^}]*}' "$CACHE_FILE" |
+#   grep -o '"date":"[^"]*"' |
+#   head -n1 |
+#   cut -d: -f2 | tr -d '"'
+# )"
+
+# --------------------------------------------------
+# Prayer time helper
+# --------------------------------------------------
+extract_time() {
+  sed -n "s/.*\"$1\":\"\([0-9]\{2\}:[0-9]\{2\}\)\".*/\1/p" "$CACHE_FILE"
+}
+
+NOW_EPOCH="$(date +%s)"
+
+# --------------------------------------------------
+# Main loop
+# --------------------------------------------------
+for prayer in Fajr Sunrise Dhuhr Asr Maghrib Isha; do
+  [[ "$prayer" == "Sunrise" && "${excludeSunrise:-1}" == "1" ]] && continue
+
+  TIME="$(extract_time "$prayer")"
+  [[ -z "$TIME" ]] && continue
+
+  PRAYER_EPOCH="$(date -d "$TODAY $TIME" +%s)"
+  BEFORE_EPOCH="$((PRAYER_EPOCH - 600))"
+
+  if [[ "$NOW_EPOCH" -ge "$BEFORE_EPOCH" && "$NOW_EPOCH" -lt "$PRAYER_EPOCH" ]]; then
+    KEY="$prayer-10"
+    if ! already_notified "$KEY"; then
+      notify "⏳ $prayer" "10 minutes before $prayer ($TIME)"
+      mark_notified "$KEY"
+    fi
+  fi
+
+  if [[ "$NOW_EPOCH" -ge "$PRAYER_EPOCH" && "$NOW_EPOCH" -lt $((PRAYER_EPOCH + 60)) ]]; then
+    KEY="$prayer-0"
+    if ! already_notified "$KEY"; then
+      notify "🕌 $prayer" "It's time for $prayer ($TIME)"
+      mark_notified "$KEY"
+    fi
+  fi
+done

@@ -22,3 +22,8 @@ anchor=bottom-center
 outer-margin=0,0,100
 format=<span size='12pt' weight='bold'>%s</span>\n<span font='Cascadia Code' color='#84c188'>%b</span>
 layer=overlay
+
+[urgency=critical]
+anchor=top-center
+format=<span size='12pt' color='#84c188' weight='bold'>%s</span>\n<span size='13pt'>%b</span><span color='gray'>\n— %a</span>
+layer=overlay

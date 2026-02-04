@@ -1,0 +1,25 @@
+# Configs are based on https://api.aladhan.com/v1/timings query params
+
+# will use lat-lon from $HOME/.prayer-location if empty here
+latitude=
+longitude=
+
+timezonestring=Asia/Jakarta
+
+# Calculation settings
+method=20
+school=0
+midnightMode=0
+latitudeAdjustmentMethod=3
+adjustment=0
+
+# Tune offsets (comma-separated, space also okay) "Imsak,Fajr,Sunrise,Dhuhr,Asr,Maghrib,Sunset,Isha,Midnight"
+tune="0,2,-3,2,3,2,2,2,0"
+
+# High latitude handling
+# (AlAdhan uses latitudeAdjustmentMethod for this)
+# Keep or modify as needed
+
+# Notification behavior
+excludeSunrise=1
+notifyAppName="Prayer Reminder"

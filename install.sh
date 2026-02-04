@@ -99,6 +99,7 @@ echo "=============================="
 declare -A MAP=(
   ["$ROOT/config"]="$HOME/.config"
   ["$ROOT/home"]="$HOME"
+  ["$ROOT/systemd"]="$HOME/.config/systemd/user"
 )
 
 for src in "${!MAP[@]}"; do

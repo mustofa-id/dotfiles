@@ -71,7 +71,48 @@ session   include      system-local-login
 
 ### Battery Charing Limit
 
-> _TODO_
+- Temporary:
+
+```bash
+# limit to 80%
+echo 80 > /sys/class/power_supply/BAT0/charge_control_end_threshold
+```
+
+- Persistent (systemd)
+
+Create service `/etc/systemd/system/battery-charge-limit.service`
+
+```conf
+[Unit]
+Description=Set battery charge limit
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -c 'echo 80 > /sys/class/power_supply/BAT0/charge_control_end_threshold'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now battery-charge-limit.service
+```
+
+- Persistent (udev)
+
+Create rule: `/etc/udev/rules.d/90-battery-charge-limit.rules`
+
+```conf
+ACTION=="add", SUBSYSTEM=="power_supply", RUN+="/bin/sh -c 'echo 80 > /sys/class/power_supply/BAT0/charge_control_end_threshold'"
+```
+
+```bash
+sudo udevadm control --reload
+sudo udevadm trigger
+```
 
 ### Btrfs Snapshot
 

@@ -1,4 +1,1 @@
-.exclude
-.exclude.*
-!.exclude.example
 config/niri/keyboard.kdl

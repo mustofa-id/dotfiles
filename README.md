@@ -2,7 +2,7 @@
 
 <img width="100%" alt="Desktop looks" src="https://github.com/user-attachments/assets/f1d3c0c5-8954-4efb-b3ba-70c7292ae133" />
 
-Dry-run by default; `--apply` flag to install. To exclude files from installation, list them in the `.exclude` file (see `.exclude.example`).
+Dry-run by default; `--apply` flag to install. To exclude files from installation, list them in the `.exclude` file.
 
 ## Packages
 

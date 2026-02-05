@@ -5,6 +5,7 @@ icons=1
 
 background-color=#222222
 border-color=#84c188
+progress-color=over #84c18832
 
 border-size=1
 border-radius=0
@@ -17,13 +18,16 @@ max-visible=5
 anchor=top-right
 default-timeout=7000
 
-[app-name=OSD]
+[app-name~="OSD|OSD2"]
 anchor=bottom-center
 outer-margin=0,0,100
-format=<span size='12pt' weight='bold'>%s</span>\n<span font='Cascadia Code' color='#84c188'>%b</span>
+format=<span size='12pt' weight='bold'>%s</span>
 layer=overlay
+
+[app-name=OSD2]
+format=<span size='12pt' weight='bold'>%s</span>\n<span font='Cascadia Code' color='#84c188'>%b</span>
 
 [urgency=critical]
 anchor=top-center
-format=<span size='12pt' color='#84c188' weight='bold'>%s</span>\n<span size='13pt'>%b</span><span color='gray'>\n— %a</span>
+format=<span size='12pt' weight='bold'>%s</span>\n<span size='13pt'>%b</span><span color='gray'>\n— %a</span>
 layer=overlay

@@ -17,12 +17,11 @@ case "$MODE" in
 
     INFO=$(wpctl get-volume "$NODE")
     VOL=$(echo "$INFO" | awk '{printf "%d", $2 * 100}')
-    VOL_BAR=$(progress_bar "$VOL" 100 50)
 
     if echo "$INFO" | grep -q MUTED; then
-      notify_replace "󰸈 $TITLE ${VOL}% (Muted)" "$VOL_BAR"
+      notify_replace title="󰸈 $TITLE ${VOL}% (Muted)" progress=$VOL
     else
-      notify_replace "󰕾 $TITLE ${VOL}%" "$VOL_BAR"
+      notify_replace title="󰕾 $TITLE ${VOL}%" progress=$VOL
     fi
     ;;
   source)
@@ -31,21 +30,19 @@ case "$MODE" in
 
     INFO=$(wpctl get-volume "$NODE")
     VOL=$(echo "$INFO" | awk '{printf "%d", $2 * 100}')
-    VOL_BAR=$(progress_bar "$VOL" 100 50)
 
     if echo "$INFO" | grep -q MUTED; then
-      notify_replace "󰍭 $TITLE ${VOL}% (Muted)" "$VOL_BAR"
+      notify_replace title="󰍭 $TITLE ${VOL}% (Muted)" progress=$VOL
     else
-      notify_replace "󰍬 $TITLE ${VOL}%" "$VOL_BAR"
+      notify_replace title="󰍬 $TITLE ${VOL}%" progress=$VOL
     fi
     ;;
   brightness)
     CUR=$(brightnessctl get)
     MAX=$(brightnessctl max)
     PCT=$(( CUR * 100 / MAX ))
-    PCT_BAR=$(progress_bar "$PCT" 100 50)
 
-    notify_replace "☀ Brightness ${PCT}%" "$PCT_BAR"
+    notify_replace title="☀ Brightness ${PCT}%" progress=$PCT
     ;;
   *)
     exit 0

@@ -44,8 +44,8 @@ notify() {
   notify-send \
     -a "${notifyAppName:-Prayer}" \
     -c "religion.prayer" \
-	-t 0 \
-	-u critical \
+    -t 0 \
+	  -u critical \
     "$1" "$2"
 }
 

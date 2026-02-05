@@ -12,13 +12,13 @@ if [ -L "$LINK" ]; then
     CURRENT_TARGET=$(readlink "$LINK")
     if [ "$CURRENT_TARGET" = "$DEFAULT" ]; then
         ln -sf "$MOD" "$LINK"
-        notify_replace "󰥻 ON" "Using Remap Keyboard"
+        notify_replace title="󰥻 ON - Using Remap Keyboard"
     else
         ln -sf "$DEFAULT" "$LINK"
-        notify_replace "󰹋 OFF" "Using Default Keyboard"
+        notify_replace title="󰹋 OFF - Using Default Keyboard"
     fi
 else
     # If default doesn't exist, create it pointing to default
     ln -sf "$DEFAULT" "$LINK"
-    notify "󰹋 Using Default Keyboard"
+    notify title="󰹋 OFF - Using Default Keyboard"
 fi

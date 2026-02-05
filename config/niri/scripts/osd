@@ -2,6 +2,7 @@
 
 MODE="${1:-sink}"
 
+IC_DIR="$HOME/.config/assets"
 ID_FILE="/tmp/osd-$MODE.id"
 TIMEOUT=3000
 
@@ -19,9 +20,9 @@ case "$MODE" in
     VOL=$(echo "$INFO" | awk '{printf "%d", $2 * 100}')
 
     if echo "$INFO" | grep -q MUTED; then
-      notify_replace title="󰸈 $TITLE ${VOL}% (Muted)" progress=$VOL
+      notify_replace title="$TITLE ${VOL}% (Muted)" progress=$VOL icon="$IC_DIR/ic-volume-mute.svg"
     else
-      notify_replace title="󰕾 $TITLE ${VOL}%" progress=$VOL
+      notify_replace title="$TITLE ${VOL}%" progress=$VOL icon="$IC_DIR/ic-volume-up.svg"
     fi
     ;;
   source)
@@ -32,9 +33,9 @@ case "$MODE" in
     VOL=$(echo "$INFO" | awk '{printf "%d", $2 * 100}')
 
     if echo "$INFO" | grep -q MUTED; then
-      notify_replace title="󰍭 $TITLE ${VOL}% (Muted)" progress=$VOL
+      notify_replace title="$TITLE ${VOL}% (Muted)" progress=$VOL icon="$IC_DIR/ic-mic-off.svg"
     else
-      notify_replace title="󰍬 $TITLE ${VOL}%" progress=$VOL
+      notify_replace title="$TITLE ${VOL}%" progress=$VOL icon="$IC_DIR/ic-mic.svg"
     fi
     ;;
   brightness)
@@ -42,7 +43,7 @@ case "$MODE" in
     MAX=$(brightnessctl max)
     PCT=$(( CUR * 100 / MAX ))
 
-    notify_replace title="☀ Brightness ${PCT}%" progress=$PCT
+    notify_replace title="Brightness ${PCT}%" progress=$PCT icon="$IC_DIR/ic-brightness.svg"
     ;;
   *)
     exit 0

@@ -12,6 +12,7 @@ SESSION_TYPE="$(loginctl show-session "$XDG_SESSION_ID" -p Type --value 2>/dev/n
 # --------------------------------------------------
 CONFIG="$HOME/.config/prayer/config"
 CACHE_DIR="$HOME/.cache/prayer"
+IC_DIR="$HOME/.config/assets"
 TODAY="$(date +%F)"
 CACHE_FILE="$CACHE_DIR/$TODAY.json"
 STATE_FILE="$CACHE_DIR/state-$TODAY"
@@ -46,6 +47,8 @@ notify() {
     -c "religion.prayer" \
     -t 0 \
 	  -u critical \
+    -i "$3" \
+    -- \
     "$1" "$2"
 }
 
@@ -138,7 +141,7 @@ for prayer in Fajr Sunrise Dhuhr Asr Maghrib Isha; do
   if [[ "$NOW_EPOCH" -ge "$BEFORE_EPOCH" && "$NOW_EPOCH" -lt "$PRAYER_EPOCH" ]]; then
     KEY="$prayer-10"
     if ! already_notified "$KEY"; then
-      notify "⏳ $prayer" "10 minutes before $prayer ($TIME)"
+      notify "$prayer" "10 minutes before $prayer ($TIME)" "$IC_DIR/ic-timer.svg"
       mark_notified "$KEY"
     fi
   fi
@@ -146,7 +149,7 @@ for prayer in Fajr Sunrise Dhuhr Asr Maghrib Isha; do
   if [[ "$NOW_EPOCH" -ge "$PRAYER_EPOCH" && "$NOW_EPOCH" -lt $((PRAYER_EPOCH + 60)) ]]; then
     KEY="$prayer-0"
     if ! already_notified "$KEY"; then
-      notify "🕌 $prayer" "It's time for $prayer ($TIME)"
+      notify "$prayer" "It's time for $prayer ($TIME)" "$IC_DIR/ic-prayer-times.svg"
       mark_notified "$KEY"
     fi
   fi

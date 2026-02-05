@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CONFIG_DIR="$HOME/.config/niri"
+IC_DIR="$HOME/.config/assets"
 LINK="$CONFIG_DIR/keyboard.kdl"
 DEFAULT="$CONFIG_DIR/templates/keyboard-default.kdl"
 MOD="$CONFIG_DIR/templates/keyboard-remap.kdl"
@@ -12,13 +13,13 @@ if [ -L "$LINK" ]; then
     CURRENT_TARGET=$(readlink "$LINK")
     if [ "$CURRENT_TARGET" = "$DEFAULT" ]; then
         ln -sf "$MOD" "$LINK"
-        notify_replace title="󰥻 ON - Using Remap Keyboard"
+        notify_replace title="ON - Using Remap Keyboard" icon="$IC_DIR/ic-keyboard-ext.svg"
     else
         ln -sf "$DEFAULT" "$LINK"
-        notify_replace title="󰹋 OFF - Using Default Keyboard"
+        notify_replace title="OFF - Using Default Keyboard" icon="$IC_DIR/ic-keyboard.svg"
     fi
 else
     # If default doesn't exist, create it pointing to default
     ln -sf "$DEFAULT" "$LINK"
-    notify title="󰹋 OFF - Using Default Keyboard"
+    notify title="OFF - Using Default Keyboard" icon="$IC_DIR/ic-keyboard.svg"
 fi

@@ -18,13 +18,17 @@ max-visible=5
 anchor=top-right
 default-timeout=7000
 
-[app-name~="OSD|OSD2"]
+[app-name=OSD]
 anchor=bottom-center
 outer-margin=0,0,100
-format=<span size='12pt' weight='bold'>%s</span>
 layer=overlay
+format=<span size='14pt' weight='bold'>%s</span>
+text-alignment=center
 
 [app-name=OSD2]
+anchor=bottom-center
+outer-margin=0,0,100
+layer=overlay
 format=<span size='12pt' weight='bold'>%s</span>\n<span font='Cascadia Code' color='#84c188'>%b</span>
 
 [urgency=critical]

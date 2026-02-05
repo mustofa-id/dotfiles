@@ -22,8 +22,12 @@ window-rule {
     // Chrome, the app-id become "" when checked using `niri msg windows`
     match title="Picture in picture"
 
+    // Google Meet
+    match app-id="google-chrome" title="^Meet.*$"
+
     // Zoom toolbar
     match app-id=r#"zoom$"# title="^as_toolbar$"
+
     open-floating true
 }
 

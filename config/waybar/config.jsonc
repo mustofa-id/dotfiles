@@ -33,8 +33,8 @@
 			"mode-mon-col": 3,
 			"format": {
 				"months": "<span color='#ffead3'><b>{}</b></span>",
-				"weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-				"today": "<span color='#ff6699'><b><u>{}</u></b></span>",
+				"weekdays": "<span color='#84c188'><b>{}</b></span>",
+				"today": "<span background='#ff669970'><b>{}</b></span>",
 			},
 		},
 	},

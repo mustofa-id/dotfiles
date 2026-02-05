@@ -23,6 +23,16 @@ window#waybar.hidden {
 	opacity: 0.2;
 }
 
+tooltip {
+	background-color: #222;
+	border: 1px solid @accent;
+}
+
+tooltip * {
+	font-family: "Lato";
+	padding: 0.25rem;
+}
+
 .modules-left,
 .modules-center,
 .modules-right {

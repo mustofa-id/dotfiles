@@ -22,4 +22,3 @@ tune="0,2,-3,2,3,2,2,2,0"
 
 # Notification behavior
 excludeSunrise=1
-notifyAppName="Prayer Reminder"

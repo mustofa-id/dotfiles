@@ -43,7 +43,7 @@ has_internet() {
 
 notify() {
   notify-send \
-    -a "${notifyAppName:-Prayer}" \
+    -a "Prayer Reminder" \
     -c "religion.prayer" \
     -t 0 \
 	  -u critical \

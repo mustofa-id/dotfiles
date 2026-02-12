@@ -18,6 +18,17 @@ switch-events {
     lid-close { spawn "systemctl" "suspend"; }
 }
 
+layer-rule {
+    match namespace="^wallpaper$"
+    place-within-backdrop true
+}
+
+overview {
+    workspace-shadow {
+        off
+    }
+}
+
 input {
     touchpad {
         tap
@@ -58,6 +69,8 @@ output "HDMI-A-1" {
 layout {
     gaps 8
     center-focused-column "never"
+    background-color "transparent"
+    empty-workspace-above-first
     preset-column-widths {
         proportion 0.5
         proportion 0.8

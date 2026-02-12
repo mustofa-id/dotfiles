@@ -14,12 +14,10 @@ window-rule {
 
 window-rule {
     match app-id="chrome-chatgpt.com__-Default"
+    
     default-column-width { proportion 0.3; }
-    default-window-height { proportion 0.8; }
-    default-floating-position x=12 y=0 relative-to="left"
-    shadow { on; }
-    opacity 0.9
-
+    default-window-height { proportion 0.9; }
+    default-floating-position x=0 y=40 relative-to="top"
     open-floating true
 }
 
@@ -33,4 +31,10 @@ window-rule {
 window-rule {
     // this prevent firefox, gedit, or similar gtk app get extra border.
     clip-to-geometry true
+}
+
+window-rule {
+    match is-floating=true
+    
+    shadow { on; }
 }

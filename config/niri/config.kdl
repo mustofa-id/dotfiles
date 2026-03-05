@@ -42,6 +42,12 @@ input {
     }
 }
 
+cursor {
+    xcursor-theme "default"
+    xcursor-size 24
+    hide-after-inactive-ms 13000
+}
+
 gestures {
     hot-corners {
         bottom-right
@@ -83,10 +89,9 @@ layout {
     }
     default-column-width { proportion 0.5; }
     focus-ring {
-        width 1.5
-        active-color "#84c188"
-        inactive-color "#505050"
-	inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
+        width 2.5
+        active-gradient from="#dfee6c" to="#84c188" angle=45 in="oklch increasing hue"
+        inactive-color "#00000000"
     }
     border { off; }
     shadow {}

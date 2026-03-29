@@ -1,3 +1,5 @@
+[core]
+	editor = vim
 [user]
 	name = mustofa-id
 	email = 25121822+mustofa-id@users.noreply.github.com

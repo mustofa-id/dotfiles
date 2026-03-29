@@ -3,7 +3,7 @@
 	"layer": "top",
 	"position": "left",
 	"output": ["eDP-1"],
-	"width": 22,
+	"width": 25,
 	"spacing": 8,
 	"modules-left": ["custom/logo", "clock"],
 	"modules-center": ["niri/workspaces"],
@@ -25,7 +25,7 @@
 	},
 
 	"clock": {
-		"format": "{:%I\n%M\n%p\n<span color='gray'>——</span>\n%d\n%m\n%y}",
+		"format": "{:%I\n%M\n<span color='gray'>%p\n——\n#%u</span>\n%d\n%m\n%y}",
 		"tooltip-format": "<tt>{calendar}</tt>",
 		// "rotate": 270,
 		"calendar": {

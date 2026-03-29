@@ -4,6 +4,8 @@
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
+source ~/.fns
+
 # Git PS1 requirement
 source /usr/share/git/completion/git-prompt.sh
 
@@ -22,5 +24,9 @@ PS1='\[\033[38;5;8m\]┏╼[\[\033[38;5;2m\]\u\[\033[38;5;8m\]@\[\033[38;5;66m\]
 
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
     . /usr/share/bash-completion/bash_completion
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export HISTCONTROL=ignoreboth

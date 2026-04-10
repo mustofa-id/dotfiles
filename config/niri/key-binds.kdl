@@ -151,4 +151,5 @@ binds {
     Mod+B                   hotkey-overlay-title="Open a Browser: google-chrome" { spawn "google-chrome-stable"; }
     XF86Launch1             hotkey-overlay-title="Swap xkb (Meta->Alt Mapping ON/OFF)" { spawn "~/.config/niri/scripts/swap-xkb"; }
     Mod+G                   hotkey-overlay-title="ChatGPT Anon Mode: google-chrome" { spawn-sh "google-chrome-stable --app=\"https://chatgpt.com?temporary-chat=true\" --user-data-dir=/tmp/chrome-chatgpt-anon --no-first-run"; }
+    Mod+BackSlash           hotkey-overlay-title="Open a Calculator: qalculate-qtk" { spawn "qalculate-gtk"; }
 }

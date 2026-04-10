@@ -5,6 +5,9 @@ ffmpeg_soc_hd() {
   output="${input%.*}-hd.mp4"
 
   ffmpeg -i "$input" \
+    -hide_banner \
+    -loglevel error \
+    -stats \
     -movflags +faststart \
     -vf "scale=1080:-2:flags=lanczos,fps=30" \
     -r 30 \
@@ -12,4 +15,10 @@ ffmpeg_soc_hd() {
     -crf 20 -maxrate 6M \
     -c:a aac -b:a 128k -ar 48000 -ac 2 \
     "$output"
+}
+
+filebrowser_exp_def() {
+  filebrowser -r "$1" \
+    -d ~/Personal/Scripts/filebrowser.db \
+    -a 0.0.0.0
 }

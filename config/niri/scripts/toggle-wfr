@@ -1,11 +1,66 @@
 #!/usr/bin/env bash
-# Toggle wf-recorder
+
 pid=$(pgrep -x wf-recorder)
 
-if [ -z "$pid" ]; then
-	# Start recording — use slurp to select or full screen
-	wf-recorder -g "$(slurp)" -f "$HOME/Videos/Screencast_$(date +%Y%m%d_%H%M%S).mkv" &
-else
-	# Stop recording
-	kill -INT "$pid"
+# -------- STOP --------
+if [ -n "$pid" ]; then
+    kill -INT "$pid"
+    notify-send -a "WFR" "Screen Recorder" "Recording stopped"
+    exit 0
 fi
+
+# -------- DIALOG --------
+input=$(zenity --forms \
+    --title="Run WF-Recorder" \
+    --text="Recording settings" \
+    --add-combo="Mode" \
+    --combo-values="Fullscreen|Region" \
+    --add-combo="Audio" \
+    --combo-values="System Sound|Microphone|No Audio")
+
+# user cancelled
+[ $? -ne 0 ] && exit 1
+[ -z "$input" ] && exit 1
+
+# -------- SAFE PARSING --------
+mode=$(echo "$input" | awk -F'|' '{print $1}' | xargs)
+audio_choice=$(echo "$input" | awk -F'|' '{print $2}' | xargs)
+
+# -------- AUDIO --------
+audio_arg=""
+
+case "$audio_choice" in
+    "System Sound")
+        audio_source=$(pactl list short sources | awk '/monitor/ {print $2; exit}')
+        [ -n "$audio_source" ] && audio_arg="--audio=$audio_source"
+        ;;
+    "Microphone")
+        audio_source=$(pactl info | awk -F': ' '/Default Source/ {print $2}')
+        [ -n "$audio_source" ] && audio_arg="--audio=$audio_source"
+        ;;
+    "No Audio")
+        audio_arg=""
+        ;;
+esac
+
+# -------- REGION / FULLSCREEN --------
+output_arg=""
+
+case "$mode" in
+    "Region")
+        region=$(slurp 2>/dev/null)
+        [ -z "$region" ] && exit 1
+        output_arg="-g $region"
+        ;;
+    "Fullscreen")
+        output_arg="-o $(niri msg --json focused-output | jq -r .name)"
+        ;;
+esac
+
+# -------- OUTPUT --------
+outfile="$HOME/Videos/Screencast_$(date +%Y%m%d_%H%M%S).mkv"
+
+# -------- RECORD --------
+wf-recorder $output_arg $audio_arg -f "$outfile" &
+
+notify-send -a "WFR" "Screen Recorder" "Recording started\nMode: $mode\nAudio: $audio_choice"

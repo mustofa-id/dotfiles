@@ -9,6 +9,7 @@ window-rule {
     match app-id=r#"zoom$"# title="^as_toolbar$"
     match app-id="org.gnome.SoundRecorder"
     match app-id="qalculate-gtk"
+    match app-id="zenity"
 
     open-floating true
 }
@@ -32,6 +33,7 @@ window-rule {
 window-rule {
     // this prevent firefox, gedit, or similar gtk app get extra border.
     clip-to-geometry true
+    draw-border-with-background false
 }
 
 window-rule {

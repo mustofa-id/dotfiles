@@ -33,7 +33,7 @@ window-rule {
 window-rule {
     // this prevent firefox, gedit, or similar gtk app get extra border.
     clip-to-geometry true
-    draw-border-with-background false
+    // draw-border-with-background false
 }
 
 window-rule {

@@ -93,7 +93,11 @@ layout {
         active-gradient from="#dfee6c" to="#84c188" angle=45 in="oklch increasing hue"
         inactive-color "#00000000"
     }
-    border { off; }
+    border {
+        width 0
+        active-color "#2e2e2e"
+        inactive-color "#2e2e2e"
+    }
     shadow {}
     struts {}
 }

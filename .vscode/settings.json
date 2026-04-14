@@ -3,7 +3,8 @@
 		"*.kdl": "groovy",
 		"*.toml": "ini",
 		"*.service": "ini",
-		"*.timer": "ini"
+		"*.timer": "ini",
+		"config": "ini"
 	},
 	"css.validate": false
 }

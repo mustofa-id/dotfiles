@@ -26,41 +26,40 @@ input=$(zenity --forms \
 mode=$(echo "$input" | awk -F'|' '{print $1}' | xargs)
 audio_choice=$(echo "$input" | awk -F'|' '{print $2}' | xargs)
 
-# -------- AUDIO --------
-audio_arg=""
-
-case "$audio_choice" in
-    "System Sound")
-        audio_source=$(pactl list short sources | awk '/monitor/ {print $2; exit}')
-        [ -n "$audio_source" ] && audio_arg="--audio=$audio_source"
-        ;;
-    "Microphone")
-        audio_source=$(pactl info | awk -F': ' '/Default Source/ {print $2}')
-        [ -n "$audio_source" ] && audio_arg="--audio=$audio_source"
-        ;;
-    "No Audio")
-        audio_arg=""
-        ;;
-esac
-
-# -------- REGION / FULLSCREEN --------
-output_arg=""
-
-case "$mode" in
-    "Region")
-        region=$(slurp 2>/dev/null)
-        [ -z "$region" ] && exit 1
-        output_arg="-g $region"
-        ;;
-    "Fullscreen")
-        output_arg="-o $(niri msg --json focused-output | jq -r .name)"
-        ;;
-esac
-
 # -------- OUTPUT --------
 outfile="$HOME/Videos/Screencast_$(date +%Y%m%d_%H%M%S).mkv"
 
+# -------- REGION / FULLSCREEN --------
+output_args=()
+
+case "$mode" in
+    "Region")
+        region=$(slurp 2>/dev/null | tr -d '\n')
+        [ -z "$region" ] && exit 1
+        output_args=(-g "$region")
+        ;;
+    "Fullscreen")
+        output_args=(-o "$(niri msg --json focused-output | jq -r .name)")
+        ;;
+esac
+
+# -------- AUDIO --------
+audio_args=()
+case "$audio_choice" in
+    "System Sound")
+        audio_source=$(pactl list short sources | awk '/monitor/ {print $2; exit}')
+        [ -n "$audio_source" ] && audio_args=(--audio="$audio_source")
+        ;;
+    "Microphone")
+        audio_source=$(pactl info | awk -F': ' '/Default Source/ {print $2}')
+        [ -n "$audio_source" ] && audio_args=(--audio="$audio_source")
+        ;;
+    "No Audio")
+        audio_args=()
+        ;;
+esac
+
 # -------- RECORD --------
-wf-recorder $output_arg $audio_arg -f "$outfile" &
+wf-recorder "${output_args[@]}" "${audio_args[@]}" -f "$outfile" &
 
 notify-send -a "WFR" "Screen Recorder" "Recording started\nMode: $mode\nAudio: $audio_choice"

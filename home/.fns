@@ -17,8 +17,55 @@ ffmpeg_soc_hd() {
     "$output"
 }
 
+ffmpeg_soc_hd_img() {
+  local input="$1"
+  local output="${input%.*}-hd.jpg"
+
+  ffmpeg -i "$input" \
+    -frames:v 1 \
+    -vf scale=2560:-2:flags=lanczos \
+    -q:v 2 \
+    -map_metadata -1 \
+    "$output"
+}
+
 filebrowser_exp_def() {
   filebrowser -r "$1" \
     -d ~/Personal/Scripts/filebrowser.db \
     -a 0.0.0.0
+}
+
+rdp_con() {
+  local host="127.0.0.1"
+  local user="mstf"
+
+  while getopts "h:u:" opt; do
+    case "$opt" in
+      h) host="$OPTARG" ;;
+      u) user="$OPTARG" ;;
+      *) echo "Usage: rdp_con [-h host] [-u user]" && return 1 ;;
+    esac
+  done
+
+  xfreerdp3 /v:"$host" \
+    /u:"$user" /d:. \
+    /log-level:WARN \
+    /f \
+    /clipboard \
+    /sound /gfx /bpp:32
+}
+
+toggle_mako_dnd() {
+    # Check current mode
+    current_mode=$(makoctl mode)
+
+    if [[ "$current_mode" == "dnd" ]]; then
+        # Switch back to default
+        makoctl mode -r dnd
+        echo "Mako: DND disabled"
+    else
+        # Enable DND
+        makoctl mode -a dnd
+        echo "Mako: DND enabled"
+    fi
 }

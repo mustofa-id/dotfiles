@@ -10,6 +10,7 @@ window-rule {
     match app-id="org.gnome.SoundRecorder"
     match app-id="qalculate-gtk"
     match app-id="zenity"
+    match app-id="anydesk" title="^AnyDesk Chat$"
 
     open-floating true
 }

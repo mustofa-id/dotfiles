@@ -1,6 +1,3 @@
-window,
-dialog,
-decoration {
+* {
 	border-radius: 0;
-	box-shadow: none;
 }

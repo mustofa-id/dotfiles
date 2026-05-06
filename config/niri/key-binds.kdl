@@ -144,6 +144,7 @@ binds {
 
     Mod+Ctrl+S              hotkey-overlay-title="Toggle Screen Recording" { spawn "~/.config/niri/scripts/toggle-wfr"; }
     Mod+Shift+W             hotkey-overlay-title="Restart Waybar" { spawn-sh "killall waybar; waybar &"; }
+    Mod+W                   hotkey-overlay-title="Toggle Waybar Visibility (Hide/Show)" { spawn-sh "killall -SIGUSR1 waybar"; }
     Mod+Shift+Ctrl+Delete   hotkey-overlay-title="Lock the Screen: swaylock" { spawn-sh "swaylock -f"; }
     Mod+V                   hotkey-overlay-title="Open a clipboard history" { spawn-sh "cliphist list | fuzzel --dmenu --with-nth 2 --prompt '󱘟  ' --placeholder 'Select clipboard entry' | cliphist decode | wl-copy"; }
     Mod+Period              hotkey-overlay-title="Open a emoji picker" { spawn-sh "rofimoji --skin-tone moderate --action copy type --prompt '  '"; }

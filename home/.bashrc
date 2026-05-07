@@ -17,7 +17,7 @@ export GIT_PS1_SHOWUPSTREAM="auto"     # <> ahead/behind
 export GIT_PS1_DESCRIBE_STYLE="branch" # Prefer branch names
 
 # Custom PS1 with git and changes arrow color: green for success, red for error
-PS1='\[\033[38;5;8m\][\[\033[38;5;2m\]\u\[\033[38;5;8m\]@\[\033[38;5;66m\]\h \[\033[1;38;5;13m\]\W\[\033[38;5;8m\]]\[\033[38;5;11m\]$(__git_ps1 " (%s)" 2>/dev/null)\n\[$(if [[ $? == 0 ]]; then echo "\033[38;5;2m"; else echo "\033[38;5;1m"; fi)\]→ \[\033[0m\]'
+PS1='\[\033[38;5;8m\][\[\033[38;5;2m\]\u\[\033[38;5;8m\]] [\[\033[1;38;5;13m\]\W\[\033[38;5;8m\]]\[\033[38;5;11m\]$(__git_ps1 " (%s)" 2>/dev/null)\n\[$(if [[ $? == 0 ]]; then echo "\033[38;5;2m"; else echo "\033[38;5;1m"; fi)\]→ \[\033[0m\]'
 
 # ➤ → ❯ ⮕
 

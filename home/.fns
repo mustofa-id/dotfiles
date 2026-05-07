@@ -29,6 +29,41 @@ ffmpeg_soc_hd_img() {
     "$output"
 }
 
+charging_limit() {
+  local input=${1:-79}
+  local path="/sys/class/power_supply/BAT0/charge_control_end_threshold"
+
+  # Check if sysfs path exists
+  if [[ ! -f "$path" ]]; then
+    echo "[ERROR] Battery control file not found: $path"
+    return 1
+  fi
+
+  # Validate numeric input
+  if ! [[ "$input" =~ ^[0-9]+$ ]]; then
+    echo "[ERROR] Invalid input: '$input' (must be a number)"
+    return 1
+  fi
+
+  # Validate range (typical safe range 50–100)
+  if (( input < 79 || input > 100 )); then
+    echo "[ERROR] Invalid range: ${input}% (allowed: 79-100)"
+    return 1
+  fi
+
+  # Read current value
+  local current
+  current=$(cat "$path" 2>/dev/null)
+
+  echo "[INFO] Current charging limit: ${current}%"
+  echo "[INFO] Setting new charging limit to: ${input}%"
+
+  # Apply new value
+  echo "$input" | sudo tee "$path" > /dev/null
+
+  echo "[OK] Charging limit updated to ${input}%"
+}
+
 filebrowser_exp_def() {
   filebrowser -r "$1" \
     -d ~/Personal/Scripts/filebrowser.db \

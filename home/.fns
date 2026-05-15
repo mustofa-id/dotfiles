@@ -90,17 +90,12 @@ rdp_con() {
     /sound /gfx /bpp:32
 }
 
-toggle_mako_dnd() {
-    # Check current mode
-    current_mode=$(makoctl mode)
-
-    if [[ "$current_mode" == "dnd" ]]; then
-        # Switch back to default
-        makoctl mode -r dnd
+dnd_mode() {
+    if makoctl mode | grep -Fxq dnd; then
+        makoctl mode -r dnd >/dev/null
         echo "Mako: DND disabled"
     else
-        # Enable DND
-        makoctl mode -a dnd
+        makoctl mode -a dnd >/dev/null
         echo "Mako: DND enabled"
     fi
 }

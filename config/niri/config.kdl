@@ -56,7 +56,7 @@ gestures {
 
 // `optional` is not yet supported
 // include optional=true "xkb-meta-alt.kdl"
-include "keyboard.kdl"
+include optional=true "keyboard.kdl"
 
 output "eDP-1" {
     mode "1920x1080@60.049"

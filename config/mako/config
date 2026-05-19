@@ -37,9 +37,13 @@ layer=overlay
 format=<span size='14pt' weight='bold'>%s</span>
 text-alignment=center
 invisible=0
+icons=1
+width=428
 
 [app-name="Prayer Reminder"]
 anchor=top-center
 format=<span size='12pt' weight='bold'>%s</span>\n<span size='13pt'>%b</span><span color='gray'>\n— %a</span>
 layer=overlay
 invisible=0
+icons=1
+width=428

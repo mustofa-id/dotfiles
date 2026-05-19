@@ -90,12 +90,32 @@ rdp_con() {
     /sound /gfx /bpp:32
 }
 
-dnd_mode() {
-    if makoctl mode | grep -Fxq dnd; then
-        makoctl mode -r dnd >/dev/null
-        echo "Mako: DND disabled"
-    else
-        makoctl mode -a dnd >/dev/null
-        echo "Mako: DND enabled"
+notification_mode() {
+    local current
+    current=$(makoctl mode | grep -vxF default | head -1)
+
+    if [[ $# -eq 0 ]]; then
+        echo "Mako: ${current:-default}"
+        return
     fi
+
+    local target="$1"
+
+    case "$target" in
+        default|dnd|private) ;;
+        *)
+            echo "Mako: invalid mode '$target' (use default, dnd, or private)" >&2
+            return 1
+            ;;
+    esac
+
+    # Remove any existing non-default mode (mako -a always appends)
+    makoctl mode -r dnd >/dev/null 2>&1 || true
+    makoctl mode -r private >/dev/null 2>&1 || true
+
+    if [[ "$target" != "default" ]]; then
+        makoctl mode -a "$target" >/dev/null
+    fi
+
+    echo "Mako: $target"
 }

@@ -45,3 +45,11 @@ Existing non-symlink files at target are skipped. Items listed in `.exclude` are
 - No build/test/lint tooling; plain shell scripts and static config files.
 - `config/assets/README.md` documents wallpaper and icon sources.
 - `SETUP.md` has machine-specific setup guides (not relevant for agent tasks).
+
+## `notification_mode` function (`home/.fns`)
+
+Three mako modes: `default`, `dnd` (invisible), `private` (app name only).
+
+- `notification_mode` — prints current mode.
+- `notification_mode <mode>` — switches to that mode.
+- Because `makoctl -a` always appends, non-default modes are always stripped first (`makoctl mode -r dnd -r private`) before adding the target. If target is `default`, nothing is added back.

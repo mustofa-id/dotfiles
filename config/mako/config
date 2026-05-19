@@ -19,6 +19,11 @@ max-visible=5
 anchor=top-right
 default-timeout=7000
 
+[mode=private]
+format=🔔 New notification from %a
+icons=0
+width=300
+
 [mode=dnd]
 invisible=1
 

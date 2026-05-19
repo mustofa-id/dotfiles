@@ -45,6 +45,8 @@ Existing non-symlink files at target are skipped. Items listed in `.exclude` are
 - No build/test/lint tooling; plain shell scripts and static config files.
 - `config/assets/README.md` documents wallpaper and icon sources.
 - `SETUP.md` has machine-specific setup guides (not relevant for agent tasks).
+- `home/.fns` functions use `local`, guard against missing args, and print structured logs (`[INFO]`, `[ERROR]`, `[OK]`).
+- Commits use multiline messages: a short summary line (with `feat:`, `fix:`, etc. prefix), then a blank line, then a detailed body.
 
 ## `notification_mode` function (`home/.fns`)
 

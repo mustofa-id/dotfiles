@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 
 ffmpeg_soc_hd() {
-  input="$1"
-  output="${input%.*}-hd.mp4"
+  local input="$1"
+
+  if [[ -z "$input" ]]; then
+    echo "[ERROR] No input file specified" >&2
+    return 1
+  fi
+
+  local output="${input%.*}-hd.mp4"
 
   ffmpeg -i "$input" \
     -hide_banner \
@@ -19,6 +25,12 @@ ffmpeg_soc_hd() {
 
 ffmpeg_soc_hd_img() {
   local input="$1"
+
+  if [[ -z "$input" ]]; then
+    echo "[ERROR] No input file specified" >&2
+    return 1
+  fi
+
   local output="${input%.*}-hd.jpg"
 
   ffmpeg -i "$input" \
@@ -32,7 +44,6 @@ ffmpeg_soc_hd_img() {
 charging_limit() {
   local input=${1:-79}
   local path="/sys/class/power_supply/BAT0/charge_control_end_threshold"
-
   # Check if sysfs path exists
   if [[ ! -f "$path" ]]; then
     echo "[ERROR] Battery control file not found: $path"
@@ -59,12 +70,20 @@ charging_limit() {
   echo "[INFO] Setting new charging limit to: ${input}%"
 
   # Apply new value
-  echo "$input" | sudo tee "$path" > /dev/null
-
-  echo "[OK] Charging limit updated to ${input}%"
+  if echo "$input" | sudo tee "$path" > /dev/null; then
+    echo "[OK] Charging limit updated to ${input}%"
+  else
+    echo "[ERROR] Failed to set charging limit" >&2
+    return 1
+  fi
 }
 
 filebrowser_exp_def() {
+  if [[ -z "$1" ]]; then
+    echo "[ERROR] No directory specified" >&2
+    return 1
+  fi
+
   filebrowser -r "$1" \
     -d ~/Personal/Scripts/filebrowser.db \
     -a 0.0.0.0
@@ -74,11 +93,12 @@ rdp_con() {
   local host="127.0.0.1"
   local user="mstf"
 
-  while getopts "h:u:" opt; do
+  while getopts ":h:u:" opt; do
     case "$opt" in
       h) host="$OPTARG" ;;
       u) user="$OPTARG" ;;
-      *) echo "Usage: rdp_con [-h host] [-u user]" && return 1 ;;
+      :) echo "[ERROR] Option -$OPTARG requires an argument" >&2; return 1 ;;
+      \?) echo "[ERROR] Unknown option: -$OPTARG" >&2; return 1 ;;
     esac
   done
 

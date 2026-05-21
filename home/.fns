@@ -41,6 +41,34 @@ ffmpeg_soc_hd_img() {
     "$output"
 }
 
+ffmpeg_old_tv() {
+  local input="$1"
+
+  if [[ -z "$input" ]]; then
+    echo "[ERROR] No input file specified" >&2
+    return 1
+  fi
+
+  local output="${input%.*}-tv.mp4"
+
+  ffmpeg -i "$input" \
+    -c:v libx264 \
+    -profile:v high \
+    -pix_fmt yuv420p \
+    -colorspace bt709 \
+    -color_primaries bt709 \
+    -color_trc bt709 \
+    -r 25 \
+    -crf 23 \
+    -preset medium \
+    -c:a aac \
+    -b:a 128k \
+    -ar 44100 \
+    -ac 2 \
+    -movflags +faststart \
+    "$output"
+}
+
 charging_limit() {
   local input=${1:-79}
   local path="/sys/class/power_supply/BAT0/charge_control_end_threshold"

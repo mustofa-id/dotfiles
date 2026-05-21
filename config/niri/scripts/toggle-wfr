@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
 pid=$(pgrep -x wf-recorder)
+icon="$HOME/.config/assets/ic-screen-record.svg"
 
 # -------- STOP --------
 if [ -n "$pid" ]; then
     kill -INT "$pid"
-    notify-send -a "WFR" "Screen Recorder" "Recording stopped"
+    notify-send -a "WFR" -i $icon "Screen Recorder" "Recording stopped"
     exit 0
 fi
 
@@ -16,7 +17,9 @@ input=$(zenity --forms \
     --add-combo="Mode" \
     --combo-values="Fullscreen|Region" \
     --add-combo="Audio" \
-    --combo-values="System Sound|Microphone|No Audio")
+    --combo-values="System Sound|Microphone|No Audio" \
+    --add-combo="Format" \
+    --combo-values="MP4|MKV")
 
 # user cancelled
 [ $? -ne 0 ] && exit 1
@@ -25,9 +28,10 @@ input=$(zenity --forms \
 # -------- SAFE PARSING --------
 mode=$(echo "$input" | awk -F'|' '{print $1}' | xargs)
 audio_choice=$(echo "$input" | awk -F'|' '{print $2}' | xargs)
+fmt=$(echo "$input" | awk -F'|' '{print $3}' | xargs | tr '[:upper:]' '[:lower:]')
 
 # -------- OUTPUT --------
-outfile="$HOME/Videos/Screencast_$(date +%Y%m%d_%H%M%S).mkv"
+outfile="$HOME/Videos/Screencast_$(date +%Y%m%d_%H%M%S).${fmt:-mp4}"
 
 # -------- REGION / FULLSCREEN --------
 output_args=()
@@ -62,4 +66,4 @@ esac
 # -------- RECORD --------
 wf-recorder "${output_args[@]}" "${audio_args[@]}" -f "$outfile" &
 
-notify-send -a "WFR" "Screen Recorder" "Recording started\nMode: $mode\nAudio: $audio_choice"
+notify-send -a "WFR" -i $icon "Screen Recorder" "Started recording in '$mode' mode using '$audio_choice' audio in '${fmt^^}' format."

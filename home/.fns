@@ -167,3 +167,40 @@ notification_mode() {
 
     echo "Mako: $target"
 }
+
+compress_pdf() {
+    local input="$1"
+    local output="${2:-${input%.pdf}-compressed.pdf}"
+    local quality="${3:-ebook}"
+
+    if [[ ! -f "$input" ]]; then
+        echo "Error: File not found: $input" >&2
+        return 1
+    fi
+
+    case "$quality" in
+        screen|ebook|printer|prepress|default) ;;
+        *)
+            echo "Invalid quality: $quality" >&2
+            echo "Valid options: screen, ebook, printer, prepress, default" >&2
+            return 1
+            ;;
+    esac
+
+    gs \
+        -sDEVICE=pdfwrite \
+        -dCompatibilityLevel=1.4 \
+        -dPDFSETTINGS="/$quality" \
+        -dNOPAUSE \
+        -dQUIET \
+        -dBATCH \
+        -sOutputFile="$output" \
+        "$input"
+
+    local status=$?
+    if [[ $status -eq 0 ]]; then
+        echo "Created: $output"
+    fi
+    return $status
+}
+

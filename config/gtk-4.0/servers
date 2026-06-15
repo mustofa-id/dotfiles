@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xbel version="1.0" xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks" xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info">
+<xbel version="1.0"
+      xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks"
+      xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info"
+>
   <bookmark href="ftp://192.168.100.10:2222/" added="2026-01-30T08:44:13.367279Z" modified="2026-01-30T08:44:13.367285Z" visited="2026-01-30T08:44:13.367281Z">
     <title>X-Plore FTP</title>
     <info>
@@ -16,6 +19,16 @@
       <metadata owner="http://freedesktop.org">
         <bookmark:applications>
           <bookmark:application name="org.gnome.Nautilus" exec="&apos;org.gnome.Nautilus %u&apos;" modified="2026-02-03T05:33:24.133615Z" count="1"/>
+        </bookmark:applications>
+      </metadata>
+    </info>
+  </bookmark>
+  <bookmark href="smb://localhost:1445/" added="2026-06-14T11:44:41.489936Z" modified="2026-06-14T11:44:41.489941Z" visited="2026-06-14T11:44:41.489938Z">
+    <title>SSEC Tunneled</title>
+    <info>
+      <metadata owner="http://freedesktop.org">
+        <bookmark:applications>
+          <bookmark:application name="org.gnome.Nautilus" exec="&apos;org.gnome.Nautilus %u&apos;" modified="2026-06-14T11:44:41.489939Z" count="1"/>
         </bookmark:applications>
       </metadata>
     </info>

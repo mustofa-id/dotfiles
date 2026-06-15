@@ -2,7 +2,10 @@
 // "/-" comments out the following node.
 // https://yalter.github.io/niri/Configuration:-Introduction
 
-// environment {}
+environment {
+    XDG_CURRENT_DESKTOP "niri"
+    QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+}
 
 // Start startup tools
 spawn-at-startup "mako"

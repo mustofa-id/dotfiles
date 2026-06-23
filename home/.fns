@@ -168,6 +168,27 @@ notification_mode() {
     echo "Mako: $target"
 }
 
+ffmpeg_trim() {
+  local input="$1"
+  local start="$2"
+  local end="$3"
+
+  if [[ -z "$input" || -z "$start" ]]; then
+    echo "[ERROR] Usage: ffmpeg_trim <input> <start> [end]" >&2
+    return 1
+  fi
+
+  local output="${input%.*}-trimmed.${input##*.}"
+
+  ffmpeg -ss "$start" -i "$input" \
+    -hide_banner \
+    -loglevel error \
+    -stats \
+    -c copy \
+    ${end:+-to "$end"} \
+    "$output"
+}
+
 compress_pdf() {
     local input="$1"
     local output="${2:-${input%.pdf}-compressed.pdf}"

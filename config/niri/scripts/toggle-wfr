@@ -15,9 +15,9 @@ input=$(zenity --forms \
     --title="Run WF-Recorder" \
     --text="Recording settings" \
     --add-combo="Mode" \
-    --combo-values="Fullscreen|Region" \
+    --combo-values="Region|Fullscreen" \
     --add-combo="Audio" \
-    --combo-values="System Sound|Microphone|No Audio" \
+    --combo-values="No Audio|System Sound|Microphone" \
     --add-combo="Format" \
     --combo-values="MP4|MKV")
 

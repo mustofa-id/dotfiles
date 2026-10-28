@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Pin a sane hardware capture gain for the ALC256 internal microphone.
+#
+# alsactl/udev restore these to maximum on every boot (and after a cold
+# codec power-up), which sums to about +90 dB before the ADC:
+#
+#   Internal Mic Boost Volume   3/3    = +30 dB
+#   Capture Volume              63/63  = +30 dB
+#   Digital Capture Volume      120/120 = +30 dB
+#
+# That saturates the ADC with preamp self-noise: the idle noise floor sits
+# near 0 dBFS, so RNNoise only ever sees noise and gates the voice away.
+#
+# Defaults below give about +16.5 dB total and an idle floor near -49 dBFS.
+# If recordings are still too quiet, raise CAPTURE in ~5 step increments
+# (+3.75 dB each) up to 63 before touching BOOST — BOOST steps are 10 dB and
+# get gritty near the top. Anything above ~57 starts eating headroom.
+
+set -euo pipefail
+
+CARD="${CARD:-0}"
+BOOST="${BOOST:-0}"    # 0..3, 10 dB per step
+CAPTURE="${CAPTURE:-52}" # 0..63, -17.25 dB .. +30 dB, 0.75 dB per step
+DIGITAL="${DIGITAL:-60}" # 0..120, -30 dB .. +30 dB, 0.5 dB per step
+TIMEOUT="${TIMEOUT:-15}"
+
+# At boot the card can be enumerated after PipeWire starts, so wait for it
+# instead of exiting early and silently leaving the gains at maximum.
+deadline=$(( SECONDS + TIMEOUT ))
+until amixer -c "$CARD" controls >/dev/null 2>&1; do
+    if (( SECONDS >= deadline )); then
+        echo "set-mic-gain: sound card $CARD not present after ${TIMEOUT}s" >&2
+        exit 0
+    fi
+    sleep 0.5
+done
+
+set_ctl() {
+    local name="$1" value="$2"
+    if amixer -c "$CARD" cget "name=$name" >/dev/null 2>&1; then
+        amixer -c "$CARD" cset "name=$name" "$value" >/dev/null
+    fi
+}
+
+set_ctl "Internal Mic Boost Volume" "$BOOST"
+set_ctl "Capture Volume" "$CAPTURE"
+set_ctl "Digital Capture Volume" "$DIGITAL"
+
+echo "set-mic-gain: card $CARD -> boost=$BOOST capture=$CAPTURE digital=$DIGITAL"

@@ -1,0 +1,15 @@
+[Unit]
+Description=Set sane ALC256 internal microphone gain
+Documentation=https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire
+After=pipewire.service wireplumber.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+# The codec/udev restores capture gain to maximum a moment after the card
+# shows up, so give it a beat before overriding the values.
+ExecStartPre=/bin/sleep 1
+ExecStart=%h/.config/pipewire/set-mic-gain
+
+[Install]
+WantedBy=default.target

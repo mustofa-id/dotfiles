@@ -71,6 +71,12 @@ link_top_level() {
       continue
     fi
 
+    # recurse into existing real directories
+    if [ -d "$target" ] && [ ! -L "$target" ] && [ -d "$item" ]; then
+      link_top_level "$item" "$target"
+      continue
+    fi
+
     # we do replace symlink in case if it broken link
     if [ -e "$target" ] && [ ! -L "$target" ]; then
       echo "⚠️  Skipping $target (exists and not a symlink)"
@@ -90,7 +96,7 @@ link_top_level() {
 echo "=============================="
 if $DRY_RUN; then
   echo "Dry-run mode (no changes will be made)"
-  echo "Use './install.sh --apply' to create symlinks"
+  echo "Use './install --apply' to create symlinks"
 else
   echo "Applying changes..."
 fi

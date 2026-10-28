@@ -4,13 +4,24 @@
 window-rule {
     // Chrome, the app-id become "" when checked using `niri msg windows`
     match app-id="" title="Picture in picture"
+
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    
     match app-id="google-chrome" title="^Meet.*$"
-    match app-id=r#"zoom$"# title="^as_toolbar$"
+    
     match app-id="org.gnome.SoundRecorder"
+    
     match app-id="qalculate-gtk"
+    
     match app-id="zenity"
+
     match app-id="anydesk" title="^AnyDesk Chat$"
+    
+    match app-id=r#"zoom$"# title="^as_toolbar$"
+    match app-id=r#"zoom$"# title="Toolbar Menu"
+    match app-id=r#"zoom$"# title="^Breakout rooms.*$"
+    match app-id=r#"zoom$"# title="Zoom Workplace"
+    match app-id=r#"zoom$"# title="zoom"
 
     open-floating true
 }
@@ -33,7 +44,9 @@ window-rule {
 
 window-rule {
     match app-id=r#"^org\.gnome\.World\.Secrets$"#
+    
     match app-id=r#"zoom$"# title="^as_toolbar$"
+    match app-id=r#"zoom$"# title="Toolbar Menu"
 
     block-out-from "screencast"
 }

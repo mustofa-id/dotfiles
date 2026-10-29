@@ -119,7 +119,8 @@ filebrowser_exp_def() {
 
 rdp_con() {
   local host="127.0.0.1"
-  local user="mstf"
+  local user
+  user="$(id -un)"
 
   while getopts ":h:u:" opt; do
     case "$opt" in

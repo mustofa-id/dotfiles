@@ -45,6 +45,7 @@ Maps:
 ## Repo conventions
 
 - `config/niri/keyboard.kdl` is gitignored (machine-local keyboard config). It is a symlink managed by `config/niri/scripts/swap-xkb`, which toggles between `templates/keyboard-default.kdl` and `templates/keyboard-remap.kdl`. Editing it directly risks being overwritten.
+- `config/gtk-3.0` and `config/gtk-4.0` ship only `gtk.css`. GTK writes `bookmarks`/`servers` beside it, so `mkdir -p ~/.config/gtk-3.0 ~/.config/gtk-4.0` before `./install` on a new machine; otherwise it links the whole directory and GTK's bookmark files land inside the repo.
 - `config/niri/scripts/` has `notify-prayer`, `osd` (volume/brightness OSD), `swap-xkb`, `toggle-wfr` (screen recorder), `toggle-mnr` (mic source cycle), and `utils`. Scripts source `utils` for `notify_replace` (replacement-ID notifications using `/tmp/osd-*.id` or `ID_FILE`).
 - `.vscode/settings.json` maps `*.kdl` → `groovy`, `*.toml` → `ini`, `*.service`/`*.timer`/`config` → `ini`.
 - No build/test/lint tooling; plain shell scripts and static config files.

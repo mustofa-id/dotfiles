@@ -29,6 +29,7 @@ Maps:
 | `config/foot/`                       | Terminal emulator         |
 | `config/mako/`                       | Notifications             |
 | `config/pipewire/`                   | Mic filter chains + gain  |
+| `config/wireplumber/`                | ALSA card properties      |
 | `config/prayer/`                     | Prayer notifier settings  |
 | `config/swaylock/`                   | Screen locker             |
 | `config/gtk-3.0/`, `config/gtk-4.0/` | GTK theme overrides       |
@@ -61,13 +62,15 @@ Hardware: `HDA Intel PCH` / `Realtek ALC256`, internal mic at
 `120/120` = ~+90 dB before the ADC. The ADC then saturates with preamp noise
 (idle RMS near `0 dBFS`), and any denoiser sounds worse because it only sees noise.
 
-- `config/pipewire/set-mic-gain` pins `0 / 52 / 60` (0 dB boost, +21.75 dB capture, 0 dB digital), which lands the idle floor near `-44 dBFS`. `systemd/mic-gain.service` runs it 2 s after PipeWire starts; it is not triggered by udev, so re-run it after hotplug/profile changes. Raise `CAPTURE` in ~5 step increments if the mic is too quiet; never go back to tapping all three controls at max.
-- `api.alsa.soft-mixer = true` (in the untracked `~/.config/wireplumber/wireplumber.conf.d/alsa-soft-mixer.conf`) makes the GUI volume slider *software* gain applied after the ADC. That is intentional — it cannot re-saturate the hardware. Never "fix quiet mic" by raising hardware capture controls.
+- `config/pipewire/set-mic-gain` pins `0 / 54 / 59` (0 dB boost, +23 dB capture, 0 dB digital), which lands the idle floor near `-45 dBFS`. `systemd/mic-gain.service` runs it after PipeWire starts; it is not triggered by udev, so re-run it after hotplug/profile changes. Raise `CAPTURE` in ~5 step increments if the mic is too quiet; never go back to tapping all three controls at max.
+- `api.alsa.soft-mixer` must stay **off** (`config/wireplumber/wireplumber.conf.d/50-alsa-card.conf`). It was briefly enabled to make the GUI slider a software gain after the ADC, but ACP does not apply that per direction: with it on, ACP skips writing the route volume, the DAC amps stay at `0` (`-65.25 dB`, pin `off`) on every sink creation, and **every output is silent regardless of the slider**. It also adds a second invisible volume layer — ALSA-only apps (`Concat` links `libasound.so.2` and never loads `libpulse`) write `Master`/`PCM` directly, so alsamixer and the system slider disagree and audio goes missing when one of them lands on zero.
+- With soft-mixer off there is exactly one volume stage: the PipeWire slider *is* alsamixer's `Master`, verified in both directions (same dB), and the mic slider maps to hardware gain (`25%` -> `Mic Boost 0` / `Capture 54`). Raising the mic slider can therefore re-saturate the ADC — keep it near 25%.
+- `config/pipewire/fix-sink` recovers a dead analog sink without restarting PipeWire, by toggling the card profile off/on (ACP then reopens the device). Use it when the sink fails to resume (`spa.alsa: 'front:0': playback open failed: Device or resource busy`) and the system falls back to `auto_null`; WirePlumber does not retry a node that failed to be created.
 - Filter chains in `config/pipewire/pipewire.conf.d/` must set `node.target` to the physical source. `stream.capture.sink = true` makes them capture the speaker monitor instead.
 - Each chain is `highpass -> denoiser -> amp_mono (Gain 5.4) -> hardLimiter (-1 dBFS)`. The limiter is from `swh-plugins` and exists because DeepFilterNet boosts transients up to +13 dB on its own, which pushed real recordings past 0 dBFS. `swh`'s `fastLookaheadLimiter` is stereo-only and silently outputs silence in a mono graph — use `hard_limiter_1413`.
 - Sources: raw `alsa_input.*`, `rnnoise_microphone` (lightweight), `deepfilter_microphone` (better quality, from `deepfilternet-plus-bin`). `Mod+Ctrl+M` cycles them; WirePlumber persists the pick in `~/.local/state/wireplumber/default-nodes`.
-- Verify with `pw-record --target <source> /tmp/x.wav` then check levels; idle noise floor should be ~`-44 dBFS`, not `-6 dBFS`.
-- `~/.config/wireplumber/` is not tracked by this repo; only `config/pipewire/` is.
+- Verify with `pw-record --target <source> /tmp/x.wav` then check levels; idle noise floor should be ~`-45 dBFS`, not `-6 dBFS`.
+- `~/.config/wireplumber/` is now tracked here: `config/wireplumber/wireplumber.conf.d/` holds the card properties. Keep it in sync with `./install --apply`.
 
 ## Prayer notifier
 

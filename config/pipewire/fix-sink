@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+#
+# Recover a dead ALSA sink without restarting PipeWire.
+#
+# When the analog sink fails to resume ("playback open failed: Device or
+# resource busy") PipeWire puts the node in error and WirePlumber gives up:
+#
+#   pw.node: ... suspended -> error (Start error: Device or resource busy)
+#   mod.adapter: can't get format: Device or resource busy
+#   wireplumber: Failed to create ALSA node ... Object activation aborted
+#
+# There is no retry, so the system falls back to auto_null ("Dummy Output")
+# until something reopens the card. Toggling the profile off/on makes ACP
+# close and reopen the device, which is the same trick WirePlumber's own
+# recovery path uses.
+
+set -euo pipefail
+
+card="$(pactl list short cards | awk '/^[0-9]+\talsa_card\./ {print $2; exit}')"
+if [[ -z "$card" ]]; then
+    echo "fix-sink: no ALSA card found" >&2
+    exit 1
+fi
+
+if pactl list short sinks | awk '{print $2}' | grep -q '^alsa_output\.'; then
+    echo "fix-sink: analog sink already present, nothing to do"
+    exit 0
+fi
+
+profile="$(pactl list cards | awk -v card="$card" '
+    $0 ~ "^[[:space:]]*Name: " card "$" { found = 1; next }
+    found && /Active Profile:/ { sub(/^[[:space:]]*Active Profile: /, ""); print; exit }
+')"
+if [[ -z "$profile" || "$profile" == "off" ]]; then
+    echo "fix-sink: card $card has no active profile to restore" >&2
+    exit 1
+fi
+
+echo "fix-sink: reopening $card ($profile)"
+pactl set-card-profile "$card" off
+sleep 0.3
+pactl set-card-profile "$card" "$profile"
+
+for _ in $(seq 20); do
+    if pactl list short sinks | awk '{print $2}' | grep -q '^alsa_output\.'; then
+        echo "fix-sink: sink back online"
+        exit 0
+    fi
+    sleep 0.5
+done
+
+echo "fix-sink: sink did not come back, restart WirePlumber" >&2
+exit 1

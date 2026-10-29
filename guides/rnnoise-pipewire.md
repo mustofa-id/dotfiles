@@ -77,10 +77,16 @@ amixer -c0 cset "name='Digital Capture Volume'" 60
 `config/pipewire/set-mic-gain` does this, and `systemd/mic-gain.service` runs it
 after PipeWire starts so a reboot cannot undo it.
 
-With `api.alsa.soft-mixer = true` (see `wireplumber.conf.d/alsa-soft-mixer.conf`)
-the PipeWire/WirePlumber volume slider is **software gain applied after the ADC**.
-Use it for level adjustments — it cannot re-saturate the hardware. Hardware gain
-belongs to `set-mic-gain` only.
+With `api.alsa.soft-mixer = false` (see
+`config/wireplumber/wireplumber.conf.d/50-alsa-card.conf`) there is a single
+volume stage: the PipeWire source slider **is** the hardware gain, and ACP maps
+it as `25%` -> `Mic Boost 0` / `Capture 54`. Keep it around 25%; raising it
+re-saturates the ADC the same way the boot default does. `set-mic-gain` writes
+the same values at boot as a fallback.
+
+Do not turn `soft-mixer` on to "protect" the slider. It is not applied per
+direction, so it leaves the playback DAC amps at `-65 dB` and every output goes
+silent no matter what the slider says. See the playback note in `AGENTS.md`.
 
 Verify the result before touching any filter:
 
@@ -510,6 +516,7 @@ The relevant configuration is:
 ```text
 ~/.config/
 ├── pipewire/
+│   ├── fix-sink
 │   ├── set-mic-gain
 │   └── pipewire.conf.d/
 │       ├── 98-deepfilter.conf
@@ -517,15 +524,19 @@ The relevant configuration is:
 │
 ├── wireplumber/
 │   └── wireplumber.conf.d/
-│       └── alsa-soft-mixer.conf
+│       └── 50-alsa-card.conf
 │
 └── systemd/user/
     └── mic-gain.service
 ```
 
-`alsa-soft-mixer.conf` keeps PipeWire from writing hardware volume registers, so
-the GUI volume slider becomes software gain. That is desirable here: hardware
-gain stays pinned by `set-mic-gain` and the slider cannot re-saturate the ADC.
+`50-alsa-card.conf` keeps `api.alsa.soft-mixer` off so ACP drives the hardware
+mixer. With it on, ACP leaves the playback DAC amps at 0 and everything is
+silent, and ALSA-only apps get a second volume layer that the system slider
+never sees.
+
+`fix-sink` toggles the card profile off/on to reopen the ALSA device when the
+sink fails to resume and the system falls back to `auto_null`.
 
 ---
 
@@ -543,10 +554,11 @@ ffmpeg -i /tmp/raw.wav -af astats -f null - 2>&1 | grep -E 'RMS level|Peak level
 
 Idle RMS near `0 dBFS` means the ADC is saturated with preamp noise. Run
 `set-mic-gain` (or `systemctl --user restart mic-gain.service`) and re-measure;
-it should land around `-44 dBFS`.
+it should land around `-45 dBFS`.
 
 Lowering the PipeWire volume slider does **not** help in that state: with
-`api.alsa.soft-mixer = true` the slider is software gain applied after the ADC.
+`api.alsa.soft-mixer = false` the slider *is* the hardware gain, so the fact
+that it is already high is the cause, not a fix.
 
 ---
 

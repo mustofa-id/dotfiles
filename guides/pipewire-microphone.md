@@ -1,8 +1,12 @@
-# RNNoise Microphone with PipeWire
+# PipeWire Microphone (RNNoise / DeepFilterNet)
 
-Lightweight microphone noise suppression using **PipeWire's native filter-chain** and the **RNNoise LADSPA plugin**.
+Microphone noise suppression using **PipeWire's native filter-chain** and the
+**RNNoise** or **DeepFilterNet** LADSPA plugins, on a capture path whose analog
+gain has been tamed first.
 
-This setup does **not** require EasyEffects and automatically creates an `RNNoise Microphone` source when PipeWire starts.
+This setup does **not** require EasyEffects. It creates `rnnoise_microphone` and
+`deepfilter_microphone` sources when PipeWire starts; `Mod+Ctrl+M` cycles
+raw → RNNoise → DeepFilter.
 
 > **Read [Hardware capture gain](#0-hardware-capture-gain-read-this-first) before tuning anything else.**
 > No denoiser can rescue a capture path whose analog gain is maxed out — RNNoise will just

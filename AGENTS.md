@@ -35,6 +35,7 @@ Maps:
 | `config/gtk-3.0/`, `config/gtk-4.0/` | GTK theme overrides       |
 | `config/assets/`                     | Wallpapers and icons      |
 | `config/environment.d/`              | User environment vars     |
+| `guides/`                            | Long-form write-ups       |
 | `home/.bashrc`                       | Shell config              |
 | `home/.fns`                          | Shell functions           |
 | `home/.gitconfig`                    | Git config                |
@@ -51,11 +52,15 @@ Maps:
 - `SETUP.md` has machine-specific setup guides (not relevant for agent tasks).
 - Shell functions and scripts use `local` variables, guard required args/paths, and print concise terminal messages.
 - Commits use multiline messages: a short summary line (`feat:`, `fix:`, etc.), a blank line, then details.
+- Before committing, show the proposed message in full and wait for explicit approval. Never commit in the same turn as the proposal.
+- Stage only paths related to the task. Leave unrelated modified files alone (they are usually in-progress work) and never `git add -A`.
 
 ## Microphone / audio
 
 Hardware: `HDA Intel PCH` / `Realtek ALC256`, internal mic at
-`alsa_input.pci-0000_00_1f.3.analog-stereo`. Full write-up in `guides/rnnoise-pipewire.md`.
+`alsa_input.pci-0000_00_1f.3.analog-stereo`. Full write-up in
+`guides/pipewire-microphone.md`; playback/jack/volume notes in
+`guides/pipewire-playback.md`.
 
 **The trap:** udev/`alsactl` restore three capture controls to max at boot —
 `Internal Mic Boost` `3/3`, `Capture Volume` `63/63`, `Digital Capture Volume`

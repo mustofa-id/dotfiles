@@ -9,6 +9,9 @@ ROOT="$(cd "$(dirname "$0")" && pwd)"
 DRY_RUN=true
 EXCLUDE_FILE="$ROOT/.exclude"
 declare -A EXCLUDES=()
+declare -A RENAME=(
+  ["vscode"]="Code - OSS"
+)
 
 # -------------------------------
 # Load exclude list
@@ -34,9 +37,11 @@ fi
 # Helper to run commands safely
 run() {
   if $DRY_RUN; then
-    echo "[dry-run] $*"
+    printf '[dry-run]'
+    printf ' %q' "$@"
+    printf '\n'
   else
-    eval "$@"
+    "$@"
   fi
 }
 
@@ -56,7 +61,8 @@ link_top_level() {
     [ -e "$item" ] || continue
 
     name="$(basename "$item")"
-    target="$dst/$name"
+    target_name="${RENAME[$name]:-$name}"
+    target="$dst/$target_name"
 
     # -------------------------------
     # Handle excludes
